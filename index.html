@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VentiSwipe - Твои шансы на грант за 30 секунд свайпов</title>
+  <meta name="description"
+    content="VentiSwipe рассчитывает вероятность поступления и экономию бюджета в реальном времени. Без таблиц, без длинных тестов.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="motion.css">
+</head>
+
+<body>
+
+  <!-- Cursor aurora: giant blurred rainbow blob that lerp-follows the pointer -->
+  <div class="cursor-aurora" id="cursor-aurora" aria-hidden="true">
+    <div class="cursor-aurora-blob"></div>
+  </div>
+
+  <!-- Site Header -->
+  <header class="site-header anim-enter" style="--enter-delay: 0ms;">
+    <div class="container header-inner">
+      <div class="brand-wrapper">
+        <a href="#" class="brand-logo">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            class="brand-logo-accent">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+          </svg>
+          <span>Venti<span class="brand-logo-accent">Swipe</span></span>
+        </a>
+        <span class="brand-badge">от экосистемы Ventorme</span>
+      </div>
+
+      <nav class="header-nav">
+        <a href="#comparison" class="nav-link">Преимущества</a>
+        <a href="#how-it-works" class="nav-link">Как работает</a>
+        <a href="#finance-math" class="nav-link">Экономика</a>
+        <a href="#results" class="nav-link">Результаты</a>
+      </nav>
+
+      <div class="header-actions">
+        <button id="btn-start-hero" class="btn btn-primary magnetic" data-magnetic="0.7">Начать выбор</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="hero-block" class="hero-section">
+    <div class="container">
+
+      <div class="hero-header anim-enter" style="--enter-delay: 80ms;">
+        <h1 class="hero-title">Твои шансы на грант за 30 секунд свайпов</h1>
+        <p class="hero-subtitle">VentiSwipe рассчитывает вероятность поступления и экономию бюджета в реальном времени.
+          Без таблиц, без длинных тестов.</p>
+      </div>
+
+      <!-- Main Interactive Panel -->
+      <div class="interactive-panel anim-enter" style="--enter-delay: 160ms;" data-cf-depth="0.45">
+
+        <!-- STEP 1: Sequential 1-Question-1-Screen Quiz -->
+        <div id="step-1-form" class="step-container">
+
+          <!-- Quiz Progress Indicator -->
+          <div class="quiz-top-nav">
+            <div class="quiz-step-counter" id="quiz-step-counter">Вопрос 1 из 4</div>
+            <div class="quiz-progress-track">
+              <div class="quiz-progress-bar" id="quiz-progress-bar" style="width: 25%;"></div>
+            </div>
+          </div>
+
+          <!-- QUESTION 1: Track Choice -->
+          <div class="quiz-screen active" id="quiz-screen-1">
+            <h2 class="quiz-question-title">Где ты планируешь учиться?</h2>
+            <p class="quiz-question-desc">Выбери страну обучения для точного расчета проходных критериев.</p>
+
+            <div class="quiz-tiles-grid">
+              <div class="quiz-tile active" id="tile-track-kz" data-track="kz">
+                <div class="quiz-tile-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+                    <path d="M2 12h20"></path>
+                  </svg>
+                </div>
+                <div class="quiz-tile-content">
+                  <div class="quiz-tile-title">Казахстан (ЕНТ)</div>
+                  <div class="quiz-tile-desc">Государственные гранты МОН РК, университеты Астаны, Алматы и регионов.
+                  </div>
+                </div>
+                <div class="quiz-tile-radio"></div>
+              </div>
+
+              <div class="quiz-tile" id="tile-track-abroad" data-track="abroad">
+                <div class="quiz-tile-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14"></path>
+                    <path d="m12 5 7 7-7 7"></path>
+                  </svg>
+                </div>
+                <div class="quiz-tile-content">
+                  <div class="quiz-tile-title">За рубеж</div>
+                  <div class="quiz-tile-desc">США, Европа и Азия, международные стипендии по SAT и IELTS.</div>
+                </div>
+                <div class="quiz-tile-radio"></div>
+              </div>
+            </div>
+
+            <div class="quiz-screen-footer">
+              <button type="button" class="btn btn-primary btn-next" id="btn-quiz-next-1">
+                <span>Далее</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- QUESTION 2: Scores Input -->
+          <div class="quiz-screen" id="quiz-screen-2">
+            <!-- Dynamic for Kazakhstan -->
+            <div id="quiz-screen-2-kz">
+              <h2 class="quiz-question-title">Твой результат ЕНТ</h2>
+              <p class="quiz-question-desc">Укажи текущий или ожидаемый общий балл ЕНТ.</p>
+
+              <div class="score-display-card">
+                <span class="score-number-big" id="ent-score-display">110</span>
+                <span class="score-unit">баллов из 140</span>
+              </div>
+
+              <div class="range-slider-wrapper" style="margin-top: 24px;">
+                <input type="range" id="ent-slider" class="range-input" min="50" max="140" value="110" step="1">
+                <div class="range-ticks">
+                  <span>50</span>
+                  <span>75</span>
+                  <span>100</span>
+                  <span>120</span>
+                  <span>140</span>
+                </div>
+              </div>
+
+              <div class="quick-presets-row">
+                <span class="quick-presets-label">Быстрый выбор:</span>
+                <button type="button" class="preset-btn" data-score="85">85</button>
+                <button type="button" class="preset-btn" data-score="100">100</button>
+                <button type="button" class="preset-btn active" data-score="110">110</button>
+                <button type="button" class="preset-btn" data-score="120">120</button>
+                <button type="button" class="preset-btn" data-score="130">130</button>
+              </div>
+            </div>
+
+            <!-- Dynamic for Abroad -->
+            <div id="quiz-screen-2-abroad" style="display: none;">
+              <h2 class="quiz-question-title">Твои баллы SAT и IELTS</h2>
+              <p class="quiz-question-desc">Укажи свои тестовые результаты для расчета вероятности стипендии.</p>
+
+              <div class="inputs-grid" style="margin-top: 24px;">
+                <div class="field-control">
+                  <label for="sat-input" class="form-label">SAT Score (400-1600)</label>
+                  <input type="number" id="sat-input" class="input-box" min="400" max="1600" step="10" value="1350"
+                    placeholder="1350">
+                </div>
+                <div class="field-control">
+                  <label for="ielts-input" class="form-label">IELTS Score (5.0-9.0)</label>
+                  <input type="number" id="ielts-input" class="input-box" min="5.0" max="9.0" step="0.5" value="7.0"
+                    placeholder="7.0">
+                </div>
+              </div>
+            </div>
+
+            <div class="quiz-screen-footer between">
+              <button type="button" class="btn btn-outline btn-prev" id="btn-quiz-prev-2">Назад</button>
+              <button type="button" class="btn btn-primary btn-next" id="btn-quiz-next-2">
+                <span>Далее</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- QUESTION 3: Profile Subjects or Abroad Region -->
+          <div class="quiz-screen" id="quiz-screen-3">
+            <!-- Dynamic for Kazakhstan -->
+            <div id="quiz-screen-3-kz">
+              <h2 class="quiz-question-title">Профильные предметы ЕНТ</h2>
+              <p class="quiz-question-desc">Выбери профильную комбинацию для фильтрации специальностей.</p>
+
+              <div class="quiz-options-list">
+                <div class="quiz-option-row active" data-subject="all">
+                  <div class="quiz-option-text">
+                    <div class="quiz-option-name">Все предметы</div>
+                    <div class="quiz-option-sub">Показать все доступные специальности без ограничений</div>
+                  </div>
+                  <div class="quiz-tile-radio"></div>
+                </div>
+
+                <div class="quiz-option-row" data-subject="math-physics">
+                  <div class="quiz-option-text">
+                    <div class="quiz-option-name">Математика - Физика</div>
+                    <div class="quiz-option-sub">IT, информационная безопасность, инженерные программы</div>
+                  </div>
+                  <div class="quiz-tile-radio"></div>
+                </div>
+
+                <div class="quiz-option-row" data-subject="chem-bio">
+                  <div class="quiz-option-text">
+                    <div class="quiz-option-name">Химия - Биология</div>
+                    <div class="quiz-option-sub">Общая медицина, педиатрия, фармация, биоинженерия</div>
+                  </div>
+                  <div class="quiz-tile-radio"></div>
+                </div>
+
+                <div class="quiz-option-row" data-subject="hist-eng">
+                  <div class="quiz-option-text">
+                    <div class="quiz-option-name">История - Английский</div>
+                    <div class="quiz-option-sub">Международный бизнес, право, коммуникации</div>
+                  </div>
+                  <div class="quiz-tile-radio"></div>
+                </div>
+
+                <div class="quiz-option-row" data-subject="geo-math">
+                  <div class="quiz-option-text">
+                    <div class="quiz-option-name">География - Математика</div>
+                    <div class="quiz-option-sub">Финансы, аудит, логистика, цифровой маркетинг</div>
+                  </div>
+                  <div class="quiz-tile-radio"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dynamic for Abroad -->
+            <div id="quiz-screen-3-abroad" style="display: none;">
+              <h2 class="quiz-question-title">Предпочитаемый регион</h2>
+              <p class="quiz-question-desc">В какой части мира ты хочешь продолжить обучение?</p>
+
+              <div class="quiz-options-list">
+                <div class="quiz-option-row active" data-region="all">
+                  <div class="quiz-option-text">
+                    <div class="quiz-option-name">Все регионы мира</div>
+                    <div class="quiz-option-sub">Поиск программ по всем доступным международным направлениям</div>
+                  </div>
+                  <div class="quiz-tile-radio"></div>
+                </div>
+
+                <div class="quiz-option-row" data-region="usa">
+                  <div class="quiz-option-text">
+                    <div class="quiz-option-name">США</div>
+                    <div class="quiz-option-sub">Ведущие технологические институты и финансовые центры</div>
+                  </div>
+                  <div class="quiz-tile-radio"></div>
+                </div>
+
+                <div class="quiz-option-row" data-region="europe">
+                  <div class="quiz-option-text">
+                    <div class="quiz-option-name">Европа</div>
+                    <div class="quiz-option-sub">Германия, Нидерланды, Италия, Испания, Венгрия</div>
+                  </div>
+                  <div class="quiz-tile-radio"></div>
+                </div>
+
+                <div class="quiz-option-row" data-region="asia">
+                  <div class="quiz-option-text">
+                    <div class="quiz-option-name">Азия</div>
+                    <div class="quiz-option-sub">Сингапур и азиатские центры технологических инноваций</div>
+                  </div>
+                  <div class="quiz-tile-radio"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="quiz-screen-footer between">
+              <button type="button" class="btn btn-outline btn-prev" id="btn-quiz-prev-3">Назад</button>
+              <button type="button" class="btn btn-primary btn-next" id="btn-quiz-next-3">
+                <span>Далее</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- QUESTION 4: Study Category -->
+          <div class="quiz-screen" id="quiz-screen-4">
+            <h2 class="quiz-question-title">Какое направление тебя интересует?</h2>
+            <p class="quiz-question-desc">Выбери целевую сферу обучения или оставь общий список.</p>
+
+            <div class="quiz-options-list">
+              <div class="quiz-option-row active" data-category="all">
+                <div class="quiz-option-text">
+                  <div class="quiz-option-name">Все направления</div>
+                  <div class="quiz-option-sub">Полный пул образовательных программ</div>
+                </div>
+                <div class="quiz-tile-radio"></div>
+              </div>
+
+              <div class="quiz-option-row" data-category="it">
+                <div class="quiz-option-text">
+                  <div class="quiz-option-name">IT и технологии</div>
+                  <div class="quiz-option-sub">Программная инженерия, искусственный интеллект, кибербезопасность</div>
+                </div>
+                <div class="quiz-tile-radio"></div>
+              </div>
+
+              <div class="quiz-option-row" data-category="engineering">
+                <div class="quiz-option-text">
+                  <div class="quiz-option-name">Инженерия</div>
+                  <div class="quiz-option-sub">Аэрокосмические технологии, транспорт, нефтегаз, устойчивые системы</div>
+                </div>
+                <div class="quiz-tile-radio"></div>
+              </div>
+
+              <div class="quiz-option-row" data-category="medicine">
+                <div class="quiz-option-text">
+                  <div class="quiz-option-name">Медицина</div>
+                  <div class="quiz-option-sub">Лечебное дело, педиатрия, стоматология, фармация</div>
+                </div>
+                <div class="quiz-tile-radio"></div>
+              </div>
+
+              <div class="quiz-option-row" data-category="business">
+                <div class="quiz-option-text">
+                  <div class="quiz-option-name">Бизнес и финансы</div>
+                  <div class="quiz-option-sub">Экономика, международные финансы, менеджмент и аналитика</div>
+                </div>
+                <div class="quiz-tile-radio"></div>
+              </div>
+            </div>
+
+            <div class="quiz-screen-footer between">
+              <button type="button" class="btn btn-outline btn-prev" id="btn-quiz-prev-4">Назад</button>
+              <button type="button" class="btn btn-primary btn-lg" id="btn-launch-swiper">
+                Рассчитать шансы и открыть свайпер
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- STEP 2: Interactive 3D Swiper (Hidden by default) -->
+        <div id="step-2-swiper" class="step-container swiper-view hidden">
+          <div class="swiper-top-bar">
+            <div class="swiper-status">
+              <span class="status-indicator"></span>
+              <span id="deck-counter" class="deck-count">Карточка 1 из 9</span>
+              <div class="progress-pill">
+                <div id="deck-progress-bar" class="progress-bar-fill"></div>
+              </div>
+            </div>
+            <button type="button" id="btn-back-to-step1" class="swiper-back-btn">
+              Настроить параметры
+            </button>
+          </div>
+
+          <!-- 3D Card Stack Container -->
+          <div class="card-stage-container">
+            <div id="card-stack" class="card-stack">
+              <!-- Dynamically populated cards with 100% opaque backgrounds -->
+            </div>
+          </div>
+
+          <!-- Desktop Controls -->
+          <div class="swiper-controls">
+            <button type="button" id="btn-desktop-skip" class="action-btn action-btn-skip magnetic" data-magnetic="0.9">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+              <span>Мимо</span>
+            </button>
+            <button type="button" id="btn-desktop-like" class="action-btn action-btn-like magnetic" data-magnetic="0.9">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>Хочу</span>
+            </button>
+          </div>
+
+          <p class="swiper-guide-note">
+            Свайпай вправо или нажимай "Хочу" для добавления в свой список. Свайпай влево для пропуска.
+          </p>
+        </div>
+
+        <!-- SECTION 2: Final Match Screen -->
+        <div id="match-screen" class="match-screen hidden">
+
+          <div class="match-header">
+            <h2 class="match-title">Найдено подходящих вузов</h2>
+
+            <div class="match-summary-stats">
+              <div class="stat-pill">
+                <span id="stat-matched-count" class="stat-pill-num">0</span>
+                <span class="stat-pill-label">Выбрано</span>
+              </div>
+              <div class="stat-pill">
+                <span id="stat-budget-saved" class="stat-pill-num">0 ₸</span>
+                <span class="stat-pill-label">Экономия</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Analytics Insight Box -->
+          <div class="shock-insight-card">
+            <div class="shock-icon-wrap">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M18 20V10"></path>
+                <path d="M12 20V4"></path>
+                <path d="M6 20v-6"></path>
+              </svg>
+            </div>
+            <div class="shock-content">
+              <div class="shock-title">Аналитика</div>
+              <p class="shock-text">
+                Твоих баллов достаточно для гранта, но конкуренция на этих факультетах высокая. Рекомендуем подготовить
+                запасной сценарий и правильно оформить список вузов.
+              </p>
+            </div>
+          </div>
+
+          <!-- Matches List -->
+          <div>
+            <div class="matches-list-title">Список отобранных университетов:</div>
+            <div id="matched-list-container" class="matches-grid">
+              <!-- Dynamically populated matched items without duplicates -->
+            </div>
+          </div>
+
+          <!-- Target Action CTA Button -->
+          <div class="cta-box">
+            <a href="https://ventorme.ai/register?utm_source=hacknext&utm_campaign=team-159" target="_blank"
+              rel="noopener noreferrer" class="btn btn-cta-main">
+              Забрать свой персональный план подготовки к гранту
+            </a>
+            <button type="button" id="btn-restart-swiper" class="restart-btn">
+              Изменить критерии и пройти заново
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section 3: Comparison with Boring Career Guidance -->
+  <section id="comparison" class="comparison-section">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2 class="section-title">Почему VentiSwipe лучше скучной профориентации</h2>
+        <p class="section-subtitle">Три причины, по которым абитуриенты выбирают тридцать секунд свайпов вместо сорока минут анкет.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card reveal" style="--reveal-delay: 0ms;">
+          <h3 class="feature-title">Мгновенный результат</h3>
+          <p class="feature-desc">Вместо сорока минут ответов на нудные тесты - тридцать секунд динамичных свайпов. Начни выбирать вуз так же легко, как любимый трек в плейлисте.</p>
+        </div>
+
+        <div class="feature-card reveal" style="--reveal-delay: 80ms;">
+          <h3 class="feature-title">Умный алгоритм Venti</h3>
+          <p class="feature-desc">ИИ анализирует реальную статистику проходных баллов прошлых лет, твою комбинацию предметов и уровень конкуренции среди абитуриентов.</p>
+        </div>
+
+        <div class="feature-card reveal" style="--reveal-delay: 160ms;">
+          <h3 class="feature-title">Финансовая ясность</h3>
+          <p class="feature-desc">С первого свайпа видишь точную сумму в тенге, которую сэкономишь для семьи, пройдя на бюджетное отделение.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section id="how-it-works" class="features-section">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2 class="section-title">Как работает алгоритм</h2>
+        <p class="section-subtitle">Точный предиктивный скоринг на основе официальных пороговых баллов и конкурсной
+          статистики прошлых лет.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card reveal" style="--reveal-delay: 0ms;">
+          <div class="feature-num">01</div>
+          <h3 class="feature-title">Ввод твоих результатов</h3>
+          <p class="feature-desc">Укажи текущий или ожидаемый результат ЕНТ, SAT или IELTS без заполнения громоздких
+            анкет.</p>
+        </div>
+
+        <div class="feature-card reveal" style="--reveal-delay: 80ms;">
+          <div class="feature-num">02</div>
+          <h3 class="feature-title">Мгновенный скоринг</h3>
+          <p class="feature-desc">Venti сопоставляет твой профиль с реальными квотами вузов Казахстана и стипендиальными
+            фондами мира.</p>
+        </div>
+
+        <div class="feature-card reveal" style="--reveal-delay: 160ms;">
+          <div class="feature-num">03</div>
+          <h3 class="feature-title">Персональная стратегия</h3>
+          <p class="feature-desc">Свайпай университеты, сохраняй фаворитов и получай готовый вектор подготовки до начала
+            приемной кампании.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5: Financial Mathematics of Grant -->
+  <section id="finance-math" class="finance-section">
+    <div class="container">
+      <div class="finance-card-wrapper reveal">
+        <h2 class="finance-title">Сколько стоит твоя ошибка при выборе вуза?</h2>
+        <p class="finance-main-text">
+          Четыре года обучения на платном отделении по востребованной специальности обойдутся семье в сумму от 3 000 000
+          до 12 000 000 тенге. Ошибка на этапе подачи документов лишает тебя права на бюджетное финансирование.
+        </p>
+        <div class="finance-accent-box">
+          <p class="finance-accent-text">
+            VentiSwipe рассчитывает траекторию поступления заранее, исключая слепой выбор и экономя миллионы тенге
+            семейного бюджета.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results Section -->
+  <section id="results" class="results-section">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2 class="section-title">Цифры экосистемы Ventorme</h2>
+        <p class="section-subtitle">Помогаем абитуриентам выбирать правильные специальности и выигрывать гранты.</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card reveal" style="--reveal-delay: 0ms;">
+          <div class="stat-value">94.2%</div>
+          <div class="stat-label">Точность прогноза грантов</div>
+        </div>
+        <div class="stat-card reveal" style="--reveal-delay: 60ms;">
+          <div class="stat-value">12 400+</div>
+          <div class="stat-label">Подобрано программ</div>
+        </div>
+        <div class="stat-card reveal" style="--reveal-delay: 120ms;">
+          <div class="stat-value">3.2 млрд ₸</div>
+          <div class="stat-label">Сэкономлено на обучении</div>
+        </div>
+        <div class="stat-card reveal" style="--reveal-delay: 180ms;">
+          <div class="stat-value">30 сек</div>
+          <div class="stat-label">Среднее время подбора</div>
+        </div>
+      </div>
+
+      <div class="partner-box reveal">
+        <div class="partner-info">
+          <h3 class="partner-title">Не оставляй грант на волю случая</h3>
+          <p class="partner-desc">
+            Тысячи школьников готовятся системно каждый день. Получи доступ к закрытым базам тестов, разборам сложных
+            задач и консультациям менторов.
+          </p>
+        </div>
+        <div>
+          <a href="https://ventorme.ai/register?utm_source=hacknext&utm_campaign=team-159" target="_blank"
+            rel="noopener noreferrer" class="btn btn-primary btn-lg magnetic" data-magnetic="0.7">
+            Подключиться к платформе
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-copy">
+        (c) 2026 VentiSwipe. Продукт экосистемы Ventorme. Все права защищены.
+      </div>
+      <div class="footer-links">
+        <a href="#hero-block" class="nav-link">Свайпер</a>
+        <a href="#comparison" class="nav-link">Преимущества</a>
+        <a href="#how-it-works" class="nav-link">Как работает</a>
+        <a href="#finance-math" class="nav-link">Экономика</a>
+        <a href="#results" class="nav-link">Результаты</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Global round Venti assistant bubble -->
+  <div class="venti-bubble magnetic is-appearing" id="venti-bubble" title="ИИ-помощник Venti" data-magnetic="1.6" role="button" tabindex="0">
+    <span class="venti-bubble-pulse" aria-hidden="true"></span>
+    <span class="venti-bubble-letter">V</span>
+    <div class="venti-bubble-tooltip" id="venti-bubble-tooltip">
+      Свайпай вузы, чтобы собрать свой список. Вправо значит добавить в лист.
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+
+</html>

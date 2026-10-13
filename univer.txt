@@ -1,0 +1,1017 @@
+{
+  "it": [
+    {
+      "id": 1,
+      "name": "Astana IT University",
+      "city": "Астана",
+      "specialess": "Cybersecurity & Software Engineering",
+      "min_score_ent": 105,
+      "grant_chance_base": 85,
+      "budget_saving_year": "2 400 000 ₸",
+      "per_year_cost": "2 400 000 ₸",
+      "vibe_comment": "Сильнейшее IT-комьюнити столицы и хакатоны каждый месяц."
+    },
+    {
+      "id": 2,
+      "name": "Satbayev University",
+      "city": "Алматы",
+      "specialess": "Искусственный интеллект и Big Data",
+      "min_score_ent": 110,
+      "grant_chance_base": 70,
+      "budget_saving_year": "2 600 000 ₸",
+      "per_year_cost": "2 600 000 ₸",
+      "vibe_comment": "Классическая инженерная школа с мощными связями в индустрии."
+    },
+    {
+      "id": 3,
+      "name": "KBTU (КБТУ)",
+      "city": "Алматы",
+      "specialess": "Information Systems",
+      "min_score_ent": 115,
+      "grant_chance_base": 55,
+      "budget_saving_year": "2 800 000 ₸",
+      "per_year_cost": "2 800 000 ₸",
+      "vibe_comment": "Элитный диплом, который ценят в международных фаундациях."
+    }
+  ],
+  "engineering": [
+    {
+      "id": 4,
+      "name": "ENU им. Гумилева",
+      "city": "Астана",
+      "specialess": "Транспортная инженерия и логистика",
+      "min_score_ent": 90,
+      "grant_chance_base": 90,
+      "budget_saving_year": "1 300 000 ₸",
+      "per_year_cost": "1 300 000 ₸",
+      "vibe_comment": "Огромный кампус, много бюджетных мест и студенческая жизнь."
+    },
+    {
+      "id": 5,
+      "name": "Satbayev University",
+      "city": "Алматы",
+      "specialess": "Нефтегазовое дело и геоэкология",
+      "min_score_ent": 102,
+      "grant_chance_base": 75,
+      "budget_saving_year": "2 200 000 ₸",
+      "per_year_cost": "2 200 000 ₸",
+      "vibe_comment": "Исторический центр притяжения будущих инженеров страны."
+    }
+  ],
+  "medicine": [
+    {
+      "id": 6,
+      "name": "КазНМУ им. Асфендиярова",
+      "city": "Алматы",
+      "specialess": "Общая медицина (General Medicine)",
+      "min_score_ent": 118,
+      "grant_chance_base": 50,
+      "budget_saving_year": "3 000 000 ₸",
+      "per_year_cost": "3 000 000 ₸",
+      "vibe_comment": "Главная кузница медицинских кадров с жестким отбором."
+    },
+    {
+      "id": 7,
+      "name": "МУА (Медицинский университет Астана)",
+      "city": "Астана",
+      "specialess": "Педиатрия и стоматология",
+      "min_score_ent": 112,
+      "grant_chance_base": 65,
+      "budget_saving_year": "2 500 000 ₸",
+      "per_year_cost": "2 500 000 ₸",
+      "vibe_comment": "Современные клинические базы и сильный преподавательский состав."
+    }
+  ],
+  "business": [
+    {
+      "id": 8,
+      "name": "NARXOZ University",
+      "city": "Алматы",
+      "specialess": "Финансы, аудит и цифровой маркетинг",
+      "min_score_ent": 95,
+      "grant_chance_base": 80,
+      "budget_saving_year": "2 100 000 ₸",
+      "per_year_cost": "2 100 000 ₸",
+      "vibe_comment": "Полностью обновленный кампус в британском стиле."
+    },
+    {
+      "id": 9,
+      "name": "KIMEP University",
+      "city": "Алматы",
+      "specialess": "Accounting and Finance",
+      "min_score_ent": 105,
+      "grant_chance_base": 60,
+      "budget_saving_year": "4 200 000 ₸",
+      "per_year_cost": "4 200 000 ₸",
+      "vibe_comment": "Североамериканский стандарт образования и сильный нетворкинг."
+    }
+  ]
+}
+
+{
+  "international_it": [
+    {
+      "id": 101,
+      "name": "Massachusetts Institute of Technology (MIT)",
+      "country": "США",
+      "specialess": "Computer Science & Artificial Intelligence",
+      "min_sat": 1500,
+      "min_ielts": 7.5,
+      "grant_chance_base": 40,
+      "budget_saving_year": "$58,000 / год",
+      "per_year_cost": "$58,000",
+      "vibe_comment": "Мировой лидер в IT и инженерии. Конкуренция жесточайшая, но оно того стоит."
+    },
+    {
+      "id": 102,
+      "name": "Technical University of Munich (TUM)",
+      "country": "Германия",
+      "specialess": "Informatics & Software Systems",
+      "min_sat": 1300,
+      "min_ielts": 6.5,
+      "grant_chance_base": 70,
+      "budget_saving_year": "Бесплатно (0 €)",
+      "per_year_cost": "0 €",
+      "vibe_comment": "Обучение бесплатно, сильнейшая техническая база в сердце Европы."
+    },
+    {
+      "id": 103,
+      "name": "Nanyang Technological University (NTU)",
+      "country": "Сингапур",
+      "specialess": "Data Science & Computer Engineering",
+      "min_sat": 1350,
+      "min_ielts": 6.5,
+      "grant_chance_base": 65,
+      "budget_saving_year": "$35,000 / год",
+      "per_year_cost": "$35,000",
+      "vibe_comment": "Азиатский технологический тигр с огромными грантами для иностранцев."
+    }
+  ],
+  "international_engineering": [
+    {
+      "id": 104,
+      "name": "Politecnico di Milano",
+      "country": "Италия",
+      "specialess": "Mechanical & Aerospace Engineering",
+      "min_sat": 1240,
+      "min_ielts": 6.0,
+      "grant_chance_base": 75,
+      "budget_saving_year": "3 900 € / год",
+      "per_year_cost": "3 900 €",
+      "vibe_comment": "Крупнейший техвуз Италии с прогрессивной шкалой оплаты и грантами."
+    },
+    {
+      "id": 105,
+      "name": "Delft University of Technology",
+      "country": "Нидерланды",
+      "specialess": "Aerospace & Sustainable Technology",
+      "min_sat": 1300,
+      "min_ielts": 6.5,
+      "grant_chance_base": 60,
+      "budget_saving_year": "22,000 € / год",
+      "per_year_cost": "22,000 €",
+      "vibe_comment": "Инженерная элита Нидерландов с проектами глобального масштаба."
+    }
+  ],
+  "international_business": [
+    {
+      "id": 106,
+      "name": "Bocconi University",
+      "country": "Италия",
+      "specialess": "International Economics and Finance",
+      "min_sat": 1400,
+      "min_ielts": 6.5,
+      "grant_chance_base": 55,
+      "budget_saving_year": "16,000 € / год",
+      "per_year_cost": "16,000 €",
+      "vibe_comment": "Главный европейский трамплин в инвестиционный банкинг и консалтинг."
+    },
+    {
+      "id": 107,
+      "name": "IE University",
+      "country": "Испания",
+      "specialess": "Business Administration & Technology",
+      "min_sat": 1300,
+      "min_ielts": 6.5,
+      "grant_chance_base": 70,
+      "budget_saving_year": "22,800 € / год",
+      "per_year_cost": "22,800 €",
+      "vibe_comment": "Инновационный подход к бизнесу, стартапам и сильный нетворкинг."
+    }
+  ],
+  "international_medicine": [
+    {
+      "id": 108,
+      "name": "University of Debrecen",
+      "country": "Венгрия",
+      "specialess": "General Medicine & Pharmacy",
+      "min_sat": 1200,
+      "min_ielts": 6.0,
+      "grant_chance_base": 75,
+      "budget_saving_year": "$17,000 / год",
+      "per_year_cost": "$17,000",
+      "vibe_comment": "Диплом признается ВОЗ и всей Европой при доступной стоимости."
+    }
+  ]
+}
+{
+  "international": {
+    "it": {
+      "usa": [
+        {
+          "id": 101,
+          "name": "Massachusetts Institute of Technology (MIT)",
+          "country": "США",
+          "specialess": "Computer Science & Artificial Intelligence",
+          "min_sat": 1500,
+          "min_ielts": 7.5,
+          "grant_chance_base": 40,
+          "budget_saving_year": "$58,000 / год",
+          "per_year_cost": "$58,000",
+          "vibe_comment": "Мировой лидер в IT и инженерии. Конкуренция жесточайшая, но оно того стоит."
+        },
+        {
+          "id": 102,
+          "name": "Stanford University",
+          "country": "США",
+          "specialess": "Computer Science & Systems",
+          "min_sat": 1520,
+          "min_ielts": 7.5,
+          "grant_chance_base": 35,
+          "budget_saving_year": "$60,000 / год",
+          "per_year_cost": "$60,000",
+          "vibe_comment": "Эпицентр Кремниевой долины, откуда выросли крупнейшие тех-гиганты."
+        },
+        {
+          "id": 103,
+          "name": "Carnegie Mellon University",
+          "country": "США",
+          "specialess": "Software Engineering & Robotics",
+          "min_sat": 1480,
+          "min_ielts": 7.0,
+          "grant_chance_base": 45,
+          "budget_saving_year": "$55,000 / год",
+          "per_year_cost": "$55,000",
+          "vibe_comment": "Легендарная школа робототехники и искусственного интеллекта."
+        },
+        {
+          "id": 104,
+          "name": "University of California, Berkeley",
+          "country": "США",
+          "specialess": "EECS (Electrical Engineering & Computer Sciences)",
+          "min_sat": 1420,
+          "min_ielts": 7.0,
+          "grant_chance_base": 50,
+          "budget_saving_year": "$44,000 / год",
+          "per_year_cost": "$44,000",
+          "vibe_comment": "Мощнейший государственный исследовательский центр с прочной связью с IT-индустрией."
+        }
+      ],
+      "europe": [
+        {
+          "id": 105,
+          "name": "Technical University of Munich (TUM)",
+          "country": "Германия",
+          "specialess": "Informatics & Software Systems",
+          "min_sat": 1300,
+          "min_ielts": 6.5,
+          "grant_chance_base": 70,
+          "budget_saving_year": "Бесплатно (0 €)",
+          "per_year_cost": "0 €",
+          "vibe_comment": "Обучение бесплатно, сильнейшая техническая база в сердце Европы."
+        },
+        {
+          "id": 106,
+          "name": "EPFL (Ecole Polytechnique Federale de Lausanne)",
+          "country": "Швейцария",
+          "specialess": "Computer Science",
+          "min_sat": 1400,
+          "min_ielts": 7.0,
+          "grant_chance_base": 55,
+          "budget_saving_year": "1 200 CHF / год",
+          "per_year_cost": "1 200 CHF",
+          "vibe_comment": "Швейцарский технологический институт с мировым признанием и низкой стоимостью."
+        },
+        {
+          "id": 107,
+          "name": "Delft University of Technology",
+          "country": "Нидерланды",
+          "specialess": "Computer Science and Engineering",
+          "min_sat": 1300,
+          "min_ielts": 6.5,
+          "grant_chance_base": 65,
+          "budget_saving_year": "16,000 € / год",
+          "per_year_cost": "16,000 €",
+          "vibe_comment": "Флагман технического образования Нидерландов с англоязычной средой."
+        },
+        {
+          "id": 108,
+          "name": "KTH Royal Institute of Technology",
+          "country": "Швеция",
+          "specialess": "Information and Communication Technology",
+          "min_sat": 1250,
+          "min_ielts": 6.5,
+          "grant_chance_base": 68,
+          "budget_saving_year": "150,000 SEK / год",
+          "per_year_cost": "150,000 SEK",
+          "vibe_comment": "Шведский инновационный центр с сильным упором на практические проекты."
+        }
+      ],
+      "asia": [
+        {
+          "id": 109,
+          "name": "Nanyang Technological University (NTU)",
+          "country": "Сингапур",
+          "specialess": "Data Science & Computer Engineering",
+          "min_sat": 1350,
+          "min_ielts": 6.5,
+          "grant_chance_base": 65,
+          "budget_saving_year": "$35,000 / год",
+          "per_year_cost": "$35,000",
+          "vibe_comment": "Азиатский технологический тигр с огромными грантами для иностранцев."
+        },
+        {
+          "id": 110,
+          "name": "National University of Singapore (NUS)",
+          "country": "Сингапур",
+          "specialess": "Computing & Information Systems",
+          "min_sat": 1420,
+          "min_ielts": 7.0,
+          "grant_chance_base": 50,
+          "budget_saving_year": "$38,000 / год",
+          "per_year_cost": "$38,000",
+          "vibe_comment": "Лучший университет Азии с колоссальным авторитетом в глобальном IT."
+        },
+        {
+          "id": 111,
+          "name": "KAIST (Korea Advanced Institute of Science & Technology)",
+          "country": "Южная Корея",
+          "specialess": "Computer Science",
+          "min_sat": 1350,
+          "min_ielts": 6.5,
+          "grant_chance_base": 70,
+          "budget_saving_year": "Полный грант (0 ₩)",
+          "per_year_cost": "0 ₩",
+          "vibe_comment": "Корейский технологический гигант, полностью покрывающий расходы студентов."
+        },
+        {
+          "id": 112,
+          "name": "Tsinghua University",
+          "country": "Китай",
+          "specialess": "Computer Science and Technology",
+          "min_sat": 1400,
+          "min_ielts": 7.0,
+          "grant_chance_base": 55,
+          "budget_saving_year": "$40,000 / год",
+          "per_year_cost": "$40,000",
+          "vibe_comment": "Главный технический вуз Китая, обгоняющий западные аналоги по ряду IT-направлений."
+        }
+      ]
+    },
+    "engineering": {
+      "usa": [
+        {
+          "id": 113,
+          "name": "California Institute of Technology (Caltech)",
+          "country": "США",
+          "specialess": "Mechanical and Civil Engineering",
+          "min_sat": 1520,
+          "min_ielts": 7.5,
+          "grant_chance_base": 38,
+          "budget_saving_year": "$60,000 / год",
+          "per_year_cost": "$60,000",
+          "vibe_comment": "Управляет Лабораторией реактивного движения NASA. Предел мечты инженера."
+        },
+        {
+          "id": 114,
+          "name": "Georgia Institute of Technology",
+          "country": "США",
+          "specialess": "Aerospace & Industrial Engineering",
+          "min_sat": 1380,
+          "min_ielts": 7.0,
+          "grant_chance_base": 55,
+          "budget_saving_year": "$32,000 / год",
+          "per_year_cost": "$32,000",
+          "vibe_comment": "Мощнейшая инженерная школа США с высоким процентом трудоустройства."
+        },
+        {
+          "id": 115,
+          "name": "University of Michigan, Ann Arbor",
+          "country": "США",
+          "specialess": "Mechanical Engineering",
+          "min_sat": 1350,
+          "min_ielts": 7.0,
+          "grant_chance_base": 58,
+          "budget_saving_year": "$52,000 / год",
+          "per_year_cost": "$52,000",
+          "vibe_comment": "Огромный исследовательской бюджет и авторитетные лаборатории."
+        },
+        {
+          "id": 116,
+          "name": "Purdue University",
+          "country": "США",
+          "specialess": "Aeronautical and Astronautical Engineering",
+          "min_sat": 1300,
+          "min_ielts": 6.5,
+          "grant_chance_base": 65,
+          "budget_saving_year": "$31,000 / год",
+          "per_year_cost": "$31,000",
+          "vibe_comment": "Колыбель американских астронавтов и передовых промышленных технологий."
+        }
+      ],
+      "europe": [
+        {
+          "id": 117,
+          "name": "Politecnico di Milano",
+          "country": "Италия",
+          "specialess": "Mechanical & Aerospace Engineering",
+          "min_sat": 1240,
+          "min_ielts": 6.0,
+          "grant_chance_base": 75,
+          "budget_saving_year": "3 900 € / год",
+          "per_year_cost": "3 900 €",
+          "vibe_comment": "Крупнейший техвуз Италии с прогрессивной шкалой оплаты и грантами."
+        },
+        {
+          "id": 118,
+          "name": "Delft University of Technology",
+          "country": "Нидерланды",
+          "specialess": "Aerospace & Sustainable Technology",
+          "min_sat": 1300,
+          "min_ielts": 6.5,
+          "grant_chance_base": 60,
+          "budget_saving_year": "22,000 € / год",
+          "per_year_cost": "22,000 €",
+          "vibe_comment": "Инженерная элита Нидерландов с проектами глобального масштаба."
+        },
+        {
+          "id": 119,
+          "name": "ETH Zurich",
+          "country": "Швейцария",
+          "specialess": "Civil & Mechanical Engineering",
+          "min_sat": 1450,
+          "min_ielts": 7.0,
+          "grant_chance_base": 50,
+          "budget_saving_year": "1 200 CHF / год",
+          "per_year_cost": "1 200 CHF",
+          "vibe_comment": "Альма-матер Эйнштейна с минимальной платой за учебу и строгим отбором."
+        },
+        {
+          "id": 120,
+          "name": "Aalto University",
+          "country": "Финляндия",
+          "specialess": "Automation and Electrical Engineering",
+          "min_sat": 1200,
+          "min_ielts": 6.0,
+          "grant_chance_base": 70,
+          "budget_saving_year": "15,000 € / год",
+          "per_year_cost": "15,000 €",
+          "vibe_comment": "Северный инновационный хаб с отличными грантами на покрытие tuition."
+        }
+      ],
+      "asia": [
+        {
+          "id": 121,
+          "name": "Tokyo Institute of Technology (Tokyo Tech)",
+          "country": "Япония",
+          "specialess": "Mechanical Engineering & Robotics",
+          "min_sat": 1300,
+          "min_ielts": 6.5,
+          "grant_chance_base": 68,
+          "budget_saving_year": "635,000 JPY / год",
+          "per_year_cost": "635,000 JPY",
+          "vibe_comment": "Ведущий технический университет Японии с мощной лабораторной базой."
+        },
+        {
+          "id": 122,
+          "name": "National Taiwan University (NTU)",
+          "country": "Тайвань",
+          "specialess": "Civil & Electrical Engineering",
+          "min_sat": 1250,
+          "min_ielts": 6.5,
+          "grant_chance_base": 72,
+          "budget_saving_year": "$5,000 / год",
+          "per_year_cost": "$5,000",
+          "vibe_comment": "Тесная интеграция с мировой полупроводниковой индустрией Тайваня."
+        },
+        {
+          "id": 123,
+          "name": "UNIST (Ulsan National Institute of Science and Technology)",
+          "country": "Южная Корея",
+          "specialess": "Advanced Materials Engineering",
+          "min_sat": 1280,
+          "min_ielts": 6.5,
+          "grant_chance_base": 70,
+          "budget_saving_year": "Полный грант (0 ₩)",
+          "per_year_cost": "0 ₩",
+          "vibe_comment": "Молодой и динамично развивающийся корейский вуз с фокусом на науку."
+        },
+        {
+          "id": 124,
+          "name": "Shanghai Jiao Tong University",
+          "country": "Китай",
+          "specialess": "Mechanical Engineering",
+          "min_sat": 1320,
+          "min_ielts": 6.5,
+          "grant_chance_base": 60,
+          "budget_saving_year": "$30,000 / год",
+          "per_year_cost": "$30,000",
+          "vibe_comment": "Один из лучших инженерных вузов Китая с мировыми позициями в рейтингах."
+        }
+      ]
+    },
+    "business": {
+      "usa": [
+        {
+          "id": 125,
+          "name": "University of Pennsylvania (Wharton)",
+          "country": "США",
+          "specialess": "Finance and Management",
+          "min_sat": 1500,
+          "min_ielts": 7.5,
+          "grant_chance_base": 42,
+          "budget_saving_year": "$58,000 / год",
+          "per_year_cost": "$58,000",
+          "vibe_comment": "Легендарная бизнес-школа Уортон, формирующая финансовую элиту мира."
+        },
+        {
+          "id": 126,
+          "name": "New York University (Stern)",
+          "country": "США",
+          "specialess": "International Business & Economics",
+          "min_sat": 1450,
+          "min_ielts": 7.0,
+          "grant_chance_base": 48,
+          "budget_saving_year": "$56,000 / год",
+          "per_year_cost": "$56,000",
+          "vibe_comment": "Расположена в самом центре Уолл-стрит. Прямой путь в инвестиции."
+        },
+        {
+          "id": 127,
+          "name": "University of California, Berkeley (Haas)",
+          "country": "США",
+          "specialess": "Business Administration",
+          "min_sat": 1400,
+          "min_ielts": 7.0,
+          "grant_chance_base": 52,
+          "budget_saving_year": "$45,000 / год",
+          "per_year_cost": "$45,000",
+          "vibe_comment": "Инновационный подход к предпринимательству и стартап-культуре."
+        },
+        {
+          "id": 128,
+          "name": "University of Michigan (Ross)",
+          "country": "США",
+          "specialess": "Business Administration",
+          "min_sat": 1380,
+          "min_ielts": 7.0,
+          "grant_chance_base": 55,
+          "budget_saving_year": "$50,000 / год",
+          "per_year_cost": "$50,000",
+          "vibe_comment": "Практическое обучение через реальные проекты с корпорациями."
+        }
+      ],
+      "europe": [
+        {
+          "id": 129,
+          "name": "Bocconi University",
+          "country": "Италия",
+          "specialess": "International Economics and Finance",
+          "min_sat": 1400,
+          "min_ielts": 6.5,
+          "grant_chance_base": 55,
+          "budget_saving_year": "16,000 € / год",
+          "per_year_cost": "16,000 €",
+          "vibe_comment": "Главный европейский трамплин в инвестиционный банкинг и консалтинг."
+        },
+        {
+          "id": 130,
+          "name": "IE University",
+          "country": "Испания",
+          "specialess": "Business Administration & Technology",
+          "min_sat": 1300,
+          "min_ielts": 6.5,
+          "grant_chance_base": 70,
+          "budget_saving_year": "22,800 € / год",
+          "per_year_cost": "22,800 €",
+          "vibe_comment": "Инновационный подход к бизнесу, стартапам и сильный нетворкинг."
+        },
+        {
+          "id": 131,
+          "name": "University of Amsterdam (UvA)",
+          "country": "Нидерланды",
+          "specialess": "Business Administration",
+          "min_sat": 1250,
+          "min_ielts": 6.5,
+          "grant_chance_base": 65,
+          "budget_saving_year": "11,000 € / год",
+          "per_year_cost": "11,000 €",
+          "vibe_comment": "Престижный европейский университет в самом сердце Амстердама."
+        },
+        {
+          "id": 132,
+          "name": "University of Warwick",
+          "country": "Великобритания",
+          "specialess": "Management and Business Studies",
+          "min_sat": 1320,
+          "min_ielts": 7.0,
+          "grant_chance_base": 58,
+          "budget_saving_year": "27,000 £ / год",
+          "per_year_cost": "27,000 £",
+          "vibe_comment": "Топ-бизнес-школа Великобритании с тесными связями с корпорациями."
+        }
+      ],
+      "asia": [
+        {
+          "id": 133,
+          "name": "HKUST Business School",
+          "country": "Гонконг",
+          "specialess": "International Management & Finance",
+          "min_sat": 1400,
+          "min_ielts": 7.0,
+          "grant_chance_base": 60,
+          "budget_saving_year": "$45,000 HKD / год",
+          "per_year_cost": "45,000 HKD",
+          "vibe_comment": "Финансовое сердце Азии и ультрасовременный кампус на берегу моря."
+        },
+        {
+          "id": 134,
+          "name": "National University of Singapore (NUS Business)",
+          "country": "Сингапур",
+          "specialess": "Business Administration",
+          "min_sat": 1420,
+          "min_ielts": 7.0,
+          "grant_chance_base": 52,
+          "budget_saving_year": "$35,000 / год",
+          "per_year_cost": "$35,000",
+          "vibe_comment": "Элитное бизнес-образование в глобальном экономическом хабе."
+        },
+        {
+          "id": 135,
+          "name": "Korea University Business School (KUBS)",
+          "country": "Южная Корея",
+          "specialess": "Business Administration",
+          "min_sat": 1300,
+          "min_ielts": 6.5,
+          "grant_chance_base": 68,
+          "budget_saving_year": "9 000 000 ₩ / год",
+          "per_year_cost": "9,000,000 ₩",
+          "vibe_comment": "Первая аккредитованная AACSB бизнес-школа в Корее с сильными связями с chaebol."
+        },
+        {
+          "id": 136,
+          "name": "Fudan University School of Management",
+          "country": "Китай",
+          "specialess": "Business and Economics",
+          "min_sat": 1350,
+          "min_ielts": 6.5,
+          "grant_chance_base": 62,
+          "budget_saving_year": "60,000 RMB / год",
+          "per_year_cost": "60,000 RMB",
+          "vibe_comment": "Ключевой экономический университет Китая в финансовом центре Шанхая."
+        }
+      ]
+    },
+    "medicine": {
+      "usa": [
+        {
+          "id": 137,
+          "name": "Johns Hopkins University",
+          "country": "США",
+          "specialess": "Molecular Biology & Pre-Medicine",
+          "min_sat": 1500,
+          "min_ielts": 7.5,
+          "grant_chance_base": 38,
+          "budget_saving_year": "$61,000 / год",
+          "per_year_cost": "$61,000",
+          "vibe_comment": "Безоговорочный лидер в медицинских исследованиях и биоинженерии."
+        },
+        {
+          "id": 138,
+          "name": "Harvard University",
+          "country": "США",
+          "specialess": "Human Sciences & Pre-Med Track",
+          "min_sat": 1520,
+          "min_ielts": 7.5,
+          "grant_chance_base": 30,
+          "budget_saving_year": "$55,000 / год",
+          "per_year_cost": "$55,000",
+          "vibe_comment": "Глобальный авторитет в медицинской науке и здравоохранении."
+        },
+        {
+          "id": 139,
+          "name": "University of California, Los Angeles (UCLA)",
+          "country": "США",
+          "specialess": "Biochemistry & Biomedical Research",
+          "min_sat": 1400,
+          "min_ielts": 7.0,
+          "grant_chance_base": 50,
+          "budget_saving_year": "$43,000 / год",
+          "per_year_cost": "$43,000",
+          "vibe_comment": "Передовые медицинские центры Калифорнии и сильные научные гранты."
+        },
+        {
+          "id": 140,
+          "name": "Boston University",
+          "country": "США",
+          "specialess": "Health Science & Biomedical Engineering",
+          "min_sat": 1350,
+          "min_ielts": 7.0,
+          "grant_chance_base": 58,
+          "budget_saving_year": "$58,000 / год",
+          "per_year_cost": "$58,000",
+          "vibe_comment": "Расположена в медицинском хабе Бостона с доступом к ведущим госпиталям."
+        }
+      ],
+      "europe": [
+        {
+          "id": 141,
+          "name": "University of Debrecen",
+          "country": "Венгрия",
+          "specialess": "General Medicine & Pharmacy",
+          "min_sat": 1200,
+          "min_ielts": 6.0,
+          "grant_chance_base": 75,
+          "budget_saving_year": "$17,000 / год",
+          "per_year_cost": "$17,000",
+          "vibe_comment": "Диплом признается ВОЗ и всей Европой при доступной стоимости."
+        },
+        {
+          "id": 142,
+          "name": "Charles University",
+          "country": "Чехия",
+          "specialess": "General Medicine",
+          "min_sat": 1250,
+          "min_ielts": 6.5,
+          "grant_chance_base": 65,
+          "budget_saving_year": "14,000 € / год",
+          "per_year_cost": "14,000 €",
+          "vibe_comment": "Один из старейших медицинских факультетов Центральной Европы."
+        },
+        {
+          "id": 143,
+          "name": "Humanitas University",
+          "country": "Италия",
+          "specialess": "Medicine and Surgery",
+          "min_sat": 1300,
+          "min_ielts": 6.5,
+          "grant_chance_base": 60,
+          "budget_saving_year": "20,000 € / год",
+          "per_year_cost": "20,000 €",
+          "vibe_comment": "Ультрасовременный медицинский хаб и клиника прямо при кампусе."
+        },
+        {
+          "id": 144,
+          "name": "Karolinska Institute",
+          "country": "Швеция",
+          "specialess": "Biomedicine",
+          "min_sat": 1380,
+          "min_ielts": 7.0,
+          "grant_chance_base": 50,
+          "budget_saving_year": "180,000 SEK / год",
+          "per_year_cost": "180,000 SEK",
+          "vibe_comment": "Шведский медицинский университет, выбирающий нобелевских лауреатов по физиологии."
+        }
+      ],
+      "asia": [
+        {
+          "id": 145,
+          "name": "National University of Singapore (NUS Yong Loo Lin)",
+          "country": "Сингапур",
+          "specialess": "Medicine",
+          "min_sat": 1450,
+          "min_ielts": 7.5,
+          "grant_chance_base": 45,
+          "budget_saving_year": "$40,000 / год",
+          "per_year_cost": "$40,000",
+          "vibe_comment": "Ведущая медицинская школа Юго-Восточной Азии с жестким международным отбором."
+        },
+        {
+          "id": 146,
+          "name": "Seoul National University College of Medicine",
+          "country": "Южная Корея",
+          "specialess": "Medical Science",
+          "min_sat": 1400,
+          "min_ielts": 7.0,
+          "grant_chance_base": 50,
+          "budget_saving_year": "8 000 000 ₩ / год",
+          "per_year_cost": "8,000,000 ₩",
+          "vibe_comment": "Флагман корейской медицины с передовыми технологиями лечения и диагностики."
+        },
+        {
+          "id": 147,
+          "name": "University of Hong Kong (Li Ka Shing Faculty of Medicine)",
+          "country": "Гонконг",
+          "specialess": "Medicine and Surgery",
+          "min_sat": 1420,
+          "min_ielts": 7.0,
+          "grant_chance_base": 48,
+          "budget_saving_year": "$42,000 / год",
+          "per_year_cost": "$42,000",
+          "vibe_comment": "Международный стандарт клинической подготовки в динамичном мегаполисе."
+        },
+        {
+          "id": 148,
+          "name": "Peking University Health Science Center",
+          "country": "Китай",
+          "specialess": "Clinical Medicine",
+          "min_sat": 1350,
+          "min_ielts": 6.5,
+          "grant_chance_base": 58,
+          "budget_saving_year": "45,000 RMB / год",
+          "per_year_cost": "45,000 RMB",
+          "vibe_comment": "Исторический центр медицинских инноваций и клинической практики в Китае."
+        }
+      ]
+    }
+  }
+}
+
+{
+  "kazakhstan": {
+    "it": [
+      {
+        "id": 1,
+        "name": "Astana IT University",
+        "city": "Астана",
+        "specialess": "Cybersecurity & Software Engineering",
+        "min_score_ent": 105,
+        "grant_chance_base": 85,
+        "budget_saving_year": "2 400 000 ₸",
+        "per_year_cost": "2 400 000 ₸",
+        "vibe_comment": "Сильнейшее IT-комьюнити столицы и хакатоны каждый месяц."
+      },
+      {
+        "id": 2,
+        "name": "Satbayev University",
+        "city": "Алматы",
+        "specialess": "Искусственный интеллект и Big Data",
+        "min_score_ent": 110,
+        "grant_chance_base": 70,
+        "budget_saving_year": "2 600 000 ₸",
+        "per_year_cost": "2 600 000 ₸",
+        "vibe_comment": "Классическая инженерная школа с мощными связями в индустрии."
+      },
+      {
+        "id": 3,
+        "name": "KBTU (КБТУ)",
+        "city": "Алматы",
+        "specialess": "Information Systems",
+        "min_score_ent": 115,
+        "grant_chance_base": 55,
+        "budget_saving_year": "2 800 000 ₸",
+        "per_year_cost": "2 800 000 ₸",
+        "vibe_comment": "Элитный диплом, который ценят в международных фаундациях."
+      },
+      {
+        "id": 4,
+        "name": "International Information Technology University (IITU)",
+        "city": "Алматы",
+        "specialess": "Software Engineering & Media Technologies",
+        "min_score_ent": 100,
+        "grant_chance_base": 80,
+        "budget_saving_year": "2 200 000 ₸",
+        "per_year_cost": "2 200 000 ₸",
+        "vibe_comment": "Специализированный IT-вуз с высоким процентом трудоустройства выпускников."
+      }
+    ],
+    "engineering": [
+      {
+        "id": 5,
+        "name": "ENU им. Гумилева",
+        "city": "Астана",
+        "specialess": "Транспортная инженерия и логистика",
+        "min_score_ent": 90,
+        "grant_chance_base": 90,
+        "budget_saving_year": "1 300 000 ₸",
+        "per_year_cost": "1 300 000 ₸",
+        "vibe_comment": "Огромный кампус, много бюджетных мест и студенческая жизнь."
+      },
+      {
+        "id": 6,
+        "name": "Satbayev University",
+        "city": "Алматы",
+        "specialess": "Нефтегазовое дело и геоэкология",
+        "min_score_ent": 102,
+        "grant_chance_base": 75,
+        "budget_saving_year": "2 200 000 ₸",
+        "per_year_cost": "2 200 000 ₸",
+        "vibe_comment": "Исторический центр притяжения будущих инженеров страны."
+      },
+      {
+        "id": 7,
+        "name": "Auezov University",
+        "city": "Шымкент",
+        "specialess": "Мехатроника и машиностроение",
+        "min_score_ent": 75,
+        "grant_chance_base": 95,
+        "budget_saving_year": "1 000 000 ₸",
+        "per_year_cost": "1 000 000 ₸",
+        "vibe_comment": "Крупный региональный университет с сильными техническими грантами."
+      },
+      {
+        "id": 8,
+        "name": "Karaganda State Industrial University",
+        "city": "Темиртау",
+        "specialess": "Металлургия и материаловедение",
+        "min_score_ent": 70,
+        "grant_chance_base": 98,
+        "budget_saving_year": "950 000 ₸",
+        "per_year_cost": "950 000 ₸",
+        "vibe_comment": "Прямые контракты с крупнейшими промышленными заводами."
+      }
+    ],
+    "medicine": [
+      {
+        "id": 9,
+        "name": "КазНМУ им. Асфендиярова",
+        "city": "Алматы",
+        "specialess": "Общая медицина (General Medicine)",
+        "min_score_ent": 118,
+        "grant_chance_base": 50,
+        "budget_saving_year": "3 000 000 ₸",
+        "per_year_cost": "3 000 000 ₸",
+        "vibe_comment": "Главная кузница медицинских кадров с жестким отбором."
+      },
+      {
+        "id": 10,
+        "name": "МУА (Медицинский университет Астана)",
+        "city": "Астана",
+        "specialess": "Педиатрия и стоматология",
+        "min_score_ent": 112,
+        "grant_chance_base": 65,
+        "budget_saving_year": "2 500 000 ₸",
+        "per_year_cost": "2 500 000 ₸",
+        "vibe_comment": "Современные клинические базы и сильный преподавательский состав."
+      },
+      {
+        "id": 11,
+        "name": "West Kazakhstan Medical University",
+        "city": "Актобе",
+        "specialess": "Лечебное дело",
+        "min_score_ent": 95,
+        "grant_chance_base": 85,
+        "budget_saving_year": "1 400 000 ₸",
+        "per_year_cost": "1 400 000 ₸",
+        "vibe_comment": "Ведущий медицинский центр западного региона страны."
+      },
+      {
+        "id": 12,
+        "name": "Semey Medical University",
+        "city": "Семей",
+        "specialess": "Общая медицина и фармация",
+        "min_score_ent": 90,
+        "grant_chance_base": 88,
+        "budget_saving_year": "1 300 000 ₸",
+        "per_year_cost": "1 300 000 ₸",
+        "vibe_comment": "Доступные гранты и отличная практическая база в восточном регионе."
+      }
+    ],
+    "business": [
+      {
+        "id": 13,
+        "name": "NARXOZ University",
+        "city": "Алматы",
+        "specialess": "Финансы, аудит и цифровой маркетинг",
+        "min_score_ent": 95,
+        "grant_chance_base": 80,
+        "budget_saving_year": "2 100 000 ₸",
+        "per_year_cost": "2 100 000 ₸",
+        "vibe_comment": "Полностью обновленный кампус в британском стиле."
+      },
+      {
+        "id": 14,
+        "name": "KIMEP University",
+        "city": "Алматы",
+        "specialess": "Accounting and Finance",
+        "min_score_ent": 105,
+        "grant_chance_base": 60,
+        "budget_saving_year": "4 200 000 ₸",
+        "per_year_cost": "4 200 000 ₸",
+        "vibe_comment": "Североамериканский стандарт образования и сильный нетворкинг."
+      },
+      {
+        "id": 15,
+        "name": "SDU University (СДУ)",
+        "city": "Каскелен",
+        "specialess": "Экономика и менеджмент",
+        "min_score_ent": 100,
+        "grant_chance_base": 75,
+        "budget_saving_year": "1 800 000 ₸",
+        "per_year_cost": "1 800 000 ₸",
+        "vibe_comment": "Высокие стандарты обучения и сильное студенческое самоуправление."
+      },
+      {
+        "id": 16,
+        "name": "Turan University",
+        "city": "Алматы",
+        "specialess": "Маркетинг и международный бизнес",
+        "min_score_ent": 85,
+        "grant_chance_base": 90,
+        "budget_saving_year": "1 500 000 ₸",
+        "per_year_cost": "1 500 000 ₸",
+        "vibe_comment": "Практико-ориентированный подход и поддержка студенческих стартапов."
+      }
+    ]
+  }
+}

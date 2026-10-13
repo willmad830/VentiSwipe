@@ -1,0 +1,527 @@
+/* ==========================================================================
+   Premium Motion Layer (palitreTEST)
+   Spring physics, magnetic tilt, scroll reveal, Venti bubble motion
+   ========================================================================== */
+
+:root {
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 0.28s;
+  --duration-med: 0.48s;
+  --duration-slow: 0.72s;
+  --shadow-card-deep: 0 24px 56px -12px rgba(21, 46, 99, 0.22), 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* ==========================================================================
+   Global cursor field: every surface element follows the pointer in 3D.
+   The 3D tilt lives on `transform`; hover lift/scale use the independent
+   `translate`/`scale` properties so the two never fight each other.
+   ========================================================================== */
+.cursor-field {
+  transition:
+    transform 0.4s var(--ease-out-expo),
+    translate 0.3s var(--ease-spring),
+    scale 0.3s var(--ease-spring),
+    border-color var(--duration-fast) var(--ease-soft),
+    box-shadow var(--duration-fast) var(--ease-soft);
+  will-change: transform;
+}
+
+/* Buttons: soft scale + shadow */
+.btn {
+  transition:
+    background-color var(--duration-fast) var(--ease-soft),
+    border-color var(--duration-fast) var(--ease-soft),
+    transform var(--duration-fast) var(--ease-spring),
+    box-shadow var(--duration-fast) var(--ease-soft);
+  will-change: transform;
+}
+
+.btn.cursor-field:hover {
+  scale: 1.03;
+}
+
+.btn.cursor-field:active {
+  scale: 0.97;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 8px 22px var(--blue-a5);
+}
+
+.btn-cta-main {
+  transition:
+    background-color var(--duration-fast) var(--ease-soft),
+    box-shadow var(--duration-fast) var(--ease-soft),
+    translate var(--duration-fast) var(--ease-spring),
+    scale var(--duration-fast) var(--ease-spring);
+}
+
+.btn-cta-main:hover {
+  translate: 0 -2px;
+  scale: 1.02;
+  box-shadow: 0 12px 36px var(--blue-a6);
+}
+
+.btn-cta-main:active {
+  scale: 0.98;
+}
+
+/* Swiper cards: opaque top, deep shadow, spring transitions */
+.swipe-card {
+  background-color: #ffffff;
+  isolation: isolate;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  touch-action: none;
+  transition:
+    transform 0.55s var(--ease-spring),
+    opacity 0.4s var(--ease-soft),
+    box-shadow 0.45s var(--ease-soft);
+}
+
+.swipe-card.is-top {
+  z-index: 5;
+  background-color: #ffffff;
+  box-shadow: var(--shadow-card-deep);
+  opacity: 1;
+}
+
+.swipe-card.is-top.is-dragging {
+  transition: none;
+  box-shadow: 0 32px 64px -16px rgba(21, 46, 99, 0.28), 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+.swipe-card.is-second,
+.swipe-card.is-third {
+  background-color: #ffffff;
+  opacity: 1;
+}
+
+.swipe-card.is-entering {
+  animation: cardEnter 0.55s var(--ease-out-expo) both;
+}
+
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.stamp-badge {
+  transition: opacity 0.18s var(--ease-soft);
+}
+
+.action-btn {
+  transition:
+    transform var(--duration-fast) var(--ease-spring),
+    background-color var(--duration-fast) var(--ease-soft),
+    box-shadow var(--duration-fast) var(--ease-soft),
+    border-color var(--duration-fast) var(--ease-soft);
+  will-change: transform;
+}
+
+.action-btn:hover:not(.magnetic) {
+  transform: scale(1.05);
+}
+
+.action-btn:active:not(.magnetic) {
+  transform: scale(0.96);
+}
+
+.action-btn-skip:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.action-btn-like:hover {
+  box-shadow: 0 10px 28px var(--blue-a5);
+}
+
+.status-indicator {
+  animation: pulseOpacity 2.4s infinite var(--ease-soft);
+}
+
+@keyframes pulseOpacity {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.progress-bar-fill {
+  transition: width var(--duration-med) var(--ease-out-expo);
+}
+
+/* Venti assistant pill + round bubble */
+.venti-assistant-wrapper {
+  border-radius: var(--radius-full);
+  padding: 10px 18px 10px 10px;
+  opacity: 0;
+  transform: scale(0.92) translateY(10px);
+  transition:
+    opacity var(--duration-med) var(--ease-out-expo),
+    transform var(--duration-med) var(--ease-spring),
+    box-shadow var(--duration-fast) var(--ease-soft),
+    border-color var(--duration-fast) var(--ease-soft);
+}
+
+.venti-assistant-wrapper.is-visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.venti-assistant-wrapper:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--blue-6);
+}
+
+.venti-assistant-bubble {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 6px 18px var(--blue-a4);
+  transition:
+    transform var(--duration-fast) var(--ease-spring),
+    box-shadow var(--duration-fast) var(--ease-soft);
+  will-change: transform;
+}
+
+.venti-pulse-dot {
+  border-radius: var(--radius-full);
+  animation: pulseOpacity 2.2s infinite var(--ease-soft);
+}
+
+.venti-speech-author {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.venti-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background-color: var(--blue-9);
+  animation: pulseOpacity 1.8s infinite var(--ease-soft);
+  flex-shrink: 0;
+}
+
+.venti-speech-text {
+  transition: opacity 0.28s var(--ease-soft), transform 0.28s var(--ease-soft);
+  min-height: 1.45em;
+}
+
+.venti-speech-text.is-fading {
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+/* Page load enter (uses `translate` so it composes with the cursor field `transform`) */
+.anim-enter {
+  opacity: 0;
+  translate: 0 18px;
+  animation: enterRise var(--duration-slow) var(--ease-out-expo) forwards;
+  animation-delay: var(--enter-delay, 0ms);
+}
+
+@keyframes enterRise {
+  from {
+    opacity: 0;
+    translate: 0 18px;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  translate: 0 28px;
+  transition:
+    opacity var(--duration-slow) var(--ease-out-expo),
+    translate var(--duration-slow) var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, translate;
+}
+
+.reveal.is-revealed {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.feature-card {
+  transition:
+    transform var(--duration-med) var(--ease-spring),
+    translate var(--duration-med) var(--ease-spring),
+    scale var(--duration-med) var(--ease-spring),
+    border-color var(--duration-fast) var(--ease-soft),
+    box-shadow var(--duration-fast) var(--ease-soft);
+}
+
+.feature-card.reveal.is-revealed:hover {
+  translate: 0 -4px;
+  border-color: var(--blue-6);
+  box-shadow: var(--shadow-md);
+}
+
+/* Magnetic micro-parallax */
+.magnetic {
+  --mx: 0px;
+  --my: 0px;
+  --rx: 0deg;
+  --ry: 0deg;
+  --ms: 1;
+  transform: translate3d(var(--mx), var(--my), 0) rotateX(var(--rx)) rotateY(var(--ry)) scale(var(--ms));
+  transition: transform 0.45s var(--ease-out-expo);
+  transform-style: preserve-3d;
+}
+
+.btn.magnetic,
+.action-btn.magnetic,
+.venti-assistant-bubble.magnetic,
+.venti-bubble.magnetic {
+  transform: translate3d(var(--mx), var(--my), 0) rotateX(var(--rx)) rotateY(var(--ry)) scale(var(--ms));
+}
+
+.magnetic.is-magnet-active {
+  transition: transform 0.12s var(--ease-soft);
+}
+
+.btn.magnetic:hover,
+.action-btn.magnetic:hover {
+  --ms: 1.04;
+}
+
+.btn.magnetic:active,
+.action-btn.magnetic:active {
+  --ms: 0.97;
+}
+
+.venti-assistant-bubble.magnetic:hover,
+.venti-bubble.magnetic:hover {
+  --ms: 1.06;
+}
+
+/* Floating round Venti bubble: drifts around the screen and glows on swipe reactions */
+.venti-bubble {
+  border-radius: var(--radius-full);
+  animation: ventiDrift 7s ease-in-out infinite;
+  transition:
+    transform 0.45s var(--ease-out-expo),
+    background var(--duration-fast) var(--ease-soft),
+    box-shadow var(--duration-med) var(--ease-soft);
+}
+
+@keyframes ventiDrift {
+  0% {
+    translate: 0 0;
+  }
+
+  25% {
+    translate: 16px -20px;
+  }
+
+  50% {
+    translate: -12px -34px;
+  }
+
+  75% {
+    translate: -20px -14px;
+  }
+
+  100% {
+    translate: 0 0;
+  }
+}
+
+.venti-bubble:hover {
+  animation-play-state: paused;
+  transform: translate3d(var(--mx), var(--my), 0) rotateX(var(--rx)) rotateY(var(--ry)) scale(var(--ms));
+}
+
+.venti-bubble.is-appearing {
+  animation: ventiBubbleIn 0.6s var(--ease-out-expo) backwards;
+}
+
+@keyframes ventiBubbleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Swipe reaction glows: the colour depends on the outcome */
+.venti-bubble.reacting-like {
+  background: linear-gradient(135deg, #22c55e 0%, #15803d 100%);
+  box-shadow:
+    0 0 0 6px rgba(34, 197, 94, 0.22),
+    0 0 42px 6px rgba(34, 197, 94, 0.55),
+    0 12px 40px rgba(21, 128, 61, 0.5);
+  animation: ventiDrift 7s ease-in-out infinite, ventiGlow 0.9s ease-in-out;
+}
+
+.venti-bubble.reacting-skip {
+  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+  box-shadow:
+    0 0 0 6px rgba(239, 68, 68, 0.22),
+    0 0 42px 6px rgba(239, 68, 68, 0.55),
+    0 12px 40px rgba(185, 28, 28, 0.5);
+  animation: ventiDrift 7s ease-in-out infinite, ventiGlow 0.9s ease-in-out;
+}
+
+.venti-bubble.reacting-borderline {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  box-shadow:
+    0 0 0 6px rgba(245, 158, 11, 0.22),
+    0 0 42px 6px rgba(245, 158, 11, 0.55),
+    0 12px 40px rgba(217, 119, 6, 0.5);
+  animation: ventiDrift 7s ease-in-out infinite, ventiGlow 0.9s ease-in-out;
+}
+
+@keyframes ventiGlow {
+  0% {
+    filter: brightness(1);
+  }
+
+  40% {
+    filter: brightness(1.35);
+  }
+
+  100% {
+    filter: brightness(1);
+  }
+}
+
+.venti-bubble-tooltip {
+  transition: opacity 0.28s var(--ease-soft), transform 0.28s var(--ease-soft);
+}
+
+.venti-bubble-tooltip.is-fading {
+  opacity: 0;
+  transform: translateX(6px);
+}
+
+/* ==========================================================================
+   Cursor aurora: a giant, heavily blurred, multi-layer rainbow blob that
+   lerp-follows the pointer behind the content with a magical overlay blend.
+   ========================================================================== */
+.cursor-aurora {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  overflow: hidden;
+  /* multiply stays visible on the light backgrounds (overlay turns invisible on white) */
+  mix-blend-mode: multiply;
+  opacity: 0;
+}
+
+.cursor-aurora-blob {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 24vmax;
+  height: 24vmax;
+  margin: -12vmax 0 0 -12vmax;
+  border-radius: 40% 60% 65% 35% / 58% 42% 58% 42%;
+  filter: blur(54px);
+  will-change: transform, filter;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(56, 189, 248, 0.9), transparent 60%),
+    radial-gradient(circle at 70% 32%, rgba(168, 85, 247, 0.85), transparent 62%),
+    radial-gradient(circle at 44% 74%, rgba(244, 114, 182, 0.82), transparent 60%),
+    radial-gradient(circle at 78% 68%, rgba(250, 204, 21, 0.72), transparent 62%),
+    radial-gradient(circle at 20% 72%, rgba(34, 197, 94, 0.75), transparent 60%);
+  animation: auroraMorph 10s ease-in-out infinite, auroraFlow 20s linear infinite;
+}
+
+/* Two extra churning layers so the blob reads as liquid, not a static circle.
+   Only border-radius/rotate are animated here, so the JS translate stays exact. */
+.cursor-aurora-blob::before,
+.cursor-aurora-blob::after {
+  content: "";
+  position: absolute;
+}
+
+.cursor-aurora-blob::before {
+  inset: 8%;
+  border-radius: 55% 45% 40% 60% / 45% 60% 40% 55%;
+  background: radial-gradient(circle at 58% 42%, rgba(129, 140, 248, 0.8), transparent 66%);
+  animation: auroraMorph 7.5s ease-in-out infinite reverse, auroraSpin 22s linear infinite;
+}
+
+.cursor-aurora-blob::after {
+  inset: 22%;
+  border-radius: 45% 55% 60% 40% / 60% 40% 55% 45%;
+  background: radial-gradient(circle at 42% 58%, rgba(45, 212, 191, 0.75), transparent 68%);
+  animation: auroraMorph 6s ease-in-out infinite, auroraSpin 16s linear infinite reverse;
+}
+
+/* Constantly shifting organic outline (position-safe: no translate/scale here) */
+@keyframes auroraMorph {
+  0%,
+  100% {
+    border-radius: 40% 60% 65% 35% / 58% 42% 58% 42%;
+  }
+
+  25% {
+    border-radius: 68% 32% 36% 64% / 40% 66% 34% 60%;
+  }
+
+  50% {
+    border-radius: 33% 67% 60% 40% / 67% 33% 64% 36%;
+  }
+
+  75% {
+    border-radius: 62% 38% 42% 58% / 36% 62% 38% 64%;
+  }
+}
+
+@keyframes auroraFlow {
+  0% {
+    filter: blur(54px) hue-rotate(0deg);
+  }
+
+  100% {
+    filter: blur(54px) hue-rotate(360deg);
+  }
+}
+
+@keyframes auroraSpin {
+  from {
+    rotate: 0deg;
+  }
+
+  to {
+    rotate: 360deg;
+  }
+}
+
+@media (max-width: 640px) {
+  .cursor-aurora-blob {
+    width: 34vmax;
+    height: 34vmax;
+    margin: -17vmax 0 0 -17vmax;
+  }
+}
+
