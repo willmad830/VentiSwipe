@@ -1,9 +1,11 @@
 {
   "name": "ventiswipe",
-  "packageManager": "pnpm@9.0.0",
   "version": "1.0.0",
   "description": "VentiSwipe landing web prototype",
   "type": "module",
+  "allowScripts": {
+    "esbuild": true
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
