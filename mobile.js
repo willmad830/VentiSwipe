@@ -1,9 +1,9 @@
 /**
  * VentiSwipe - Mobile Interaction Layer
  * Drawer navigation, gesture quiz navigation, thumb-zone action bar,
- * undo history and haptic feedback. Initialized by app.js with a small API
- * so this module never imports app.js (no circular dependency).
- * Strictly NO emojis and NO em-dashes.
+ * undo history, haptic feedback and the vertical scroll reel for cards.
+ * Initialized by app.js with a small API so this module never imports app.js
+ * (no circular dependency). Strictly NO emojis and NO em-dashes.
  */
 
 const COARSE_QUERY = '(pointer: coarse)';
@@ -25,6 +25,11 @@ export function haptic(type) {
     /* noop */
   }
 }
+
+// Shared state for the vertical reel so the action bar can target the card
+// that is currently centered in the drum.
+let reelActiveCard = null;
+let reelStop = null;
 
 function initDrawer() {
   const trigger = document.getElementById('btn-mobile-menu');
@@ -98,13 +103,8 @@ function initDrawer() {
   if (closeBtn) closeBtn.addEventListener('click', close);
   backdrop.addEventListener('click', close);
   drawer.querySelectorAll('a[href]').forEach((link) => link.addEventListener('click', close));
-  if (cta) {
-    cta.addEventListener('click', () => {
-      close();
-      const hero = document.getElementById('hero-block');
-      if (hero) hero.scrollIntoView({ behavior: 'smooth' });
-    });
-  }
+  // The drawer CTA is now a registration link: just close and let it navigate.
+  if (cta) cta.addEventListener('click', close);
 }
 
 // Horizontal swipe between quiz questions. Uses the pointer stream directly so
@@ -170,13 +170,137 @@ function initSwiperBar(api) {
   const undo = document.getElementById('btn-mobile-undo');
   const restart = document.getElementById('btn-mobile-restart');
 
-  if (skip) skip.addEventListener('click', () => api.triggerCardAction('skip'));
-  if (like) like.addEventListener('click', () => api.triggerCardAction('like'));
+  if (skip) skip.addEventListener('click', () => api.triggerCardAction('skip', reelActiveCard || undefined));
+  if (like) like.addEventListener('click', () => api.triggerCardAction('like', reelActiveCard || undefined));
   if (undo) undo.addEventListener('click', () => api.undoLastSwipe());
   if (restart) restart.addEventListener('click', () => api.restart());
 }
 
-function initGestureHint() {
+// ===== Vertical scroll reel (mobile) =====
+// Cards are laid out in a vertical snap-scroll column and driven by scroll
+// position: the centered card is flat and sharp, neighbours rotate back into a
+// cylinder (scenario A) and fast scrolling warps the drum (scenario B).
+function initReel(api) {
+  const stage = document.querySelector('.card-stage-container');
+  const stack = document.getElementById('card-stack');
+  if (!stage || !stack) return;
+
+  let rafId = null;
+  let running = false;
+  let lastTop = stack.scrollTop;
+  let velocity = 0;
+  let idleFrames = 0;
+
+  function collect() {
+    return Array.from(stack.querySelectorAll('.swipe-card--reel'))
+      .filter((c) => !c.classList.contains('is-leaving'));
+  }
+
+  function centerFirst() {
+    const cards = collect();
+    if (!cards.length) return;
+    const first = cards[0];
+    const target = first.offsetTop - (stack.clientHeight - first.offsetHeight) / 2;
+    stack.scrollTop = Math.max(0, target);
+    lastTop = stack.scrollTop;
+  }
+
+  function refresh() {
+    stack.classList.add('card-stack--reel');
+    window.requestAnimationFrame(() => {
+      centerFirst();
+      update();
+    });
+  }
+  window.reelRefresh = refresh;
+
+  function update() {
+    const cards = collect();
+    if (!cards.length) return;
+
+    const stageRect = stage.getBoundingClientRect();
+    const cy = stageRect.top + stageRect.height / 2;
+    const half = (stageRect.height / 2) || 1;
+    const vel = velocity;
+
+    let best = null;
+    let bestD = Infinity;
+
+    for (let i = 0; i < cards.length; i++) {
+      const card = cards[i];
+      const r = card.getBoundingClientRect();
+      let d = (r.top + r.height / 2 - cy) / half;
+      d = Math.max(-1.6, Math.min(1.6, d));
+      const abs = Math.abs(d);
+
+      // Scenario A: cylindrical rotation. Below centre the bottom edge rolls
+      // away; above centre the top edge bends into depth.
+      const rotX = -d * 44 - vel * 8;
+      const scale = Math.max(0.6, 1 - abs * 0.13 - Math.abs(vel) * 0.02);
+      const tz = -abs * 60;
+      const opacity = Math.max(0, Math.min(1, 1 - abs * 0.4));
+
+      card.style.transform =
+        'translateZ(' + tz.toFixed(1) + 'px) rotateX(' + rotX.toFixed(2) + 'deg) scale(' + scale.toFixed(3) + ')';
+      card.style.opacity = opacity.toFixed(3);
+      card.style.zIndex = String(100 - Math.round(abs * 40));
+
+      if (abs < bestD) {
+        bestD = abs;
+        best = card;
+      }
+    }
+
+    if (best && best !== reelActiveCard) {
+      if (reelActiveCard) reelActiveCard.classList.remove('is-reel-active');
+      reelActiveCard = best;
+      best.classList.add('is-reel-active');
+    }
+  }
+
+  function frame() {
+    rafId = window.requestAnimationFrame(frame);
+    const top = stack.scrollTop;
+    const dv = top - lastTop;
+    lastTop = top;
+    // Scenario B: velocity drives the warp, then decays for a soft spring back.
+    velocity += (dv - velocity) * 0.25;
+    velocity *= 0.86;
+    if (Math.abs(velocity) < 0.05) velocity = 0;
+    update();
+
+    // Pause the loop once the drum has settled to save battery.
+    if (dv === 0 && velocity === 0) {
+      idleFrames++;
+      if (idleFrames > 40) stop();
+    } else {
+      idleFrames = 0;
+    }
+  }
+
+  function start() {
+    idleFrames = 0;
+    if (running) return;
+    running = true;
+    lastTop = stack.scrollTop;
+    rafId = window.requestAnimationFrame(frame);
+  }
+
+  function stop() {
+    running = false;
+    if (rafId) {
+      window.cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+  }
+
+  stack.addEventListener('scroll', start, { passive: true });
+  reelStop = stop;
+  refresh();
+  start();
+}
+
+function initGestureHint(api) {
   const hint = document.getElementById('swiper-gesture-hint');
   const swiper = document.getElementById('step-2-swiper');
   if (!hint || !swiper) return;
@@ -185,6 +309,23 @@ function initGestureHint() {
 
   function hide() {
     hint.classList.remove('is-visible');
+  }
+
+  function styleForMode() {
+    const reel = !!(api.isReelMode && api.isReelMode());
+    hint.classList.toggle('swiper-gesture-hint--reel', reel);
+    const text = hint.querySelector('.hint-text');
+    const left = hint.querySelector('.hint-left');
+    const right = hint.querySelector('.hint-right');
+    if (reel) {
+      if (text) text.textContent = 'Листай карточки';
+      if (left) left.textContent = '\u2191';
+      if (right) right.textContent = '\u2193';
+    } else {
+      if (text) text.textContent = 'Свайпай карточки';
+      if (left) left.textContent = '\u2190';
+      if (right) right.textContent = '\u2192';
+    }
   }
 
   function reveal() {
@@ -197,17 +338,21 @@ function initGestureHint() {
       seen = false;
     }
     if (seen) return;
+    styleForMode();
     hint.classList.add('is-visible');
     try {
       window.sessionStorage.setItem('venti-hint-seen', '1');
     } catch (err) {
       /* noop */
     }
-    window.setTimeout(hide, 4200);
+    window.setTimeout(hide, 5000);
   }
 
   const stack = document.getElementById('card-stack');
-  if (stack) stack.addEventListener('pointerdown', hide, { passive: true });
+  if (stack) {
+    stack.addEventListener('pointerdown', hide, { passive: true });
+    stack.addEventListener('wheel', hide, { passive: true });
+  }
 
   if (!('MutationObserver' in window)) {
     reveal();
@@ -225,8 +370,23 @@ function initGestureHint() {
 export function initMobile(api) {
   initDrawer();
   initSwiperBar(api);
-  initGestureHint();
+  initGestureHint(api);
   if (isCoarsePointer()) {
     initQuizGestures(api);
   }
+
+  const wantsReel = () => !!(api.isReelMode && api.isReelMode());
+  if (wantsReel()) initReel(api);
+
+  window.addEventListener('resize', () => {
+    const want = wantsReel();
+    if (want && !reelStop) {
+      initReel(api);
+    } else if (!want && reelStop) {
+      reelStop();
+      reelStop = null;
+      reelActiveCard = null;
+      window.reelRefresh = null;
+    }
+  });
 }
