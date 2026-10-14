@@ -6,6 +6,7 @@
 
 import { initMobile, haptic } from './mobile.js';
 import { initGeoBackground } from './geo.js';
+import { initBlockMotion } from './blocks.js';
 
 // University database directly integrated from univer.txt
 const UNIVERSITY_DATABASE = {
@@ -1013,8 +1014,7 @@ const appState = {
   currentIndex: 0,
   likedUniversities: [],
   totalInitialDeckSize: 0,
-  swipeHistory: [],
-  reelMode: false
+  swipeHistory: []
 };
 
 // Calculation Formulas
@@ -1615,7 +1615,6 @@ function renderDeckDOM() {
   const cardStack = document.getElementById('card-stack');
   if (!cardStack) return;
   cardStack.innerHTML = '';
-  cardStack.classList.toggle('card-stack--reel', appState.reelMode);
   
   const remainingCards = appState.currentDeck.slice(appState.currentIndex);
   
@@ -1641,17 +1640,14 @@ function renderDeckDOM() {
     deckProgressBar.style.width = progressPercent + '%';
   }
   
-  const isReel = appState.reelMode;
-  const visibleCards = remainingCards.slice(0, isReel ? Math.min(remainingCards.length, 8) : 3);
+  const visibleCards = remainingCards.slice(0, 3);
 
   visibleCards.forEach((cardData, idx) => {
     const cardEl = document.createElement('div');
     cardEl.className = 'swipe-card';
     cardEl.dataset.id = cardData.id;
 
-    if (isReel) {
-      cardEl.classList.add('swipe-card--reel');
-    } else if (idx === 0) {
+    if (idx === 0) {
       cardEl.classList.add('is-top', 'is-entering');
       cardEl.addEventListener('animationend', () => {
         cardEl.classList.remove('is-entering');
@@ -1721,8 +1717,6 @@ function renderDeckDOM() {
 
     cardStack.appendChild(cardEl);
   });
-
-  if (window.reelRefresh) window.reelRefresh();
 }
 
 // 3D Card Drag and Swipe Engine (premium spring physics)
@@ -1828,11 +1822,6 @@ function attachDragHandlers(cardEl) {
 
 // Action Trigger: Like or Skip
 function triggerCardAction(action, targetCard) {
-  if (appState.reelMode && targetCard) {
-    triggerReelAction(action, targetCard);
-    return;
-  }
-
   const cardStack = document.getElementById('card-stack');
   const currentCard = targetCard || (cardStack ? cardStack.querySelector('.swipe-card.is-top') : null);
   if (!currentCard) return;
@@ -1869,42 +1858,6 @@ function triggerCardAction(action, targetCard) {
     appState.currentIndex++;
     renderDeckDOM();
   }, 380);
-}
-
-// Reel action: commit the centered card (and any cards scrolled past) then
-// animate the card out of the drum.
-function triggerReelAction(action, cardEl) {
-  const remaining = appState.currentDeck.slice(appState.currentIndex);
-  let offset = remaining.findIndex((c) => String(c.id) === String(cardEl.dataset.id));
-  if (offset < 0) offset = 0;
-
-  // Cards above the centered one were scrolled past, so they count as skipped.
-  for (let i = 0; i < offset; i++) {
-    appState.swipeHistory.push({ action: 'skip', item: remaining[i] });
-  }
-
-  const currentItem = remaining[offset];
-  if (action === 'like' && currentItem) {
-    const alreadyLiked = appState.likedUniversities.some((u) => u.name === currentItem.name);
-    if (!alreadyLiked) appState.likedUniversities.push(currentItem);
-  }
-  if (currentItem) {
-    appState.swipeHistory.push({ action: action, item: currentItem });
-  }
-
-  haptic(action);
-  updateMobileUndoState();
-  updateVentiCommentary(action);
-
-  cardEl.classList.add('is-leaving');
-  cardEl.style.transition = 'transform 0.44s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.44s ease';
-  cardEl.style.transform = 'translate3d(0, -28%, 0) rotateX(24deg) scale(0.8)';
-  cardEl.style.opacity = '0';
-
-  setTimeout(() => {
-    appState.currentIndex += offset + 1;
-    renderDeckDOM();
-  }, 400);
 }
 
 // Enable or disable the mobile undo button based on swipe history.
@@ -2026,16 +1979,6 @@ function showFinalMatchScreen() {
 }
 
 // Named navigation helpers shared by buttons and mobile gestures.
-function isReelMode() {
-  return !!(window.matchMedia &&
-    window.matchMedia('(pointer: coarse)').matches &&
-    window.matchMedia('(max-width: 900px)').matches);
-}
-
-function updateReelMode() {
-  appState.reelMode = isReelMode();
-}
-
 function goToQuizStep(step) {
   appState.currentQuizStep = Math.min(4, Math.max(1, step));
   updateQuizUI();
@@ -2075,7 +2018,6 @@ function launchSwiper() {
 
   showVentiBubble('Свайпай вправо, чтобы добавить вуз в список. Свайпай влево, чтобы пропустить.', 'info');
 
-  updateReelMode();
   renderDeckDOM();
   if (window.refreshCursorField) window.refreshCursorField();
   if (step2Swiper) {
@@ -2302,8 +2244,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // must not disable the premium animations.
   prefersReducedMotion = false;
   initEventListeners();
-  updateReelMode();
-  window.addEventListener('resize', updateReelMode);
   updateQuizUI();
   initVentiBubble();
   initScrollReveal();
@@ -2311,6 +2251,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCursorField();
   initCursorAurora();
   initGeoBackground();
+  initBlockMotion();
   initMobile({
     appState: appState,
     quizNext: quizNext,
@@ -2318,8 +2259,7 @@ document.addEventListener('DOMContentLoaded', () => {
     launchSwiper: launchSwiper,
     restart: restartApp,
     triggerCardAction: triggerCardAction,
-    undoLastSwipe: undoLastSwipe,
-    isReelMode: isReelMode
+    undoLastSwipe: undoLastSwipe
   });
   updateMobileUndoState();
 });

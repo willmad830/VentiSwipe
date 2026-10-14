@@ -1,0 +1,36 @@
+/* ==========================================================================
+   VentiSwipe - Content Block Scroll Motion
+   The blocks below the quiz (features, stats, finance, partner, section heads)
+   ride a virtual cylinder as the page scrolls: they tilt back when entering,
+   straighten and grow when centered, and bend into depth on the way out.
+   Fast scrolling warps them (velocity) and they spring back when it stops.
+   Uses the individual rotate / scale properties so it composes with the
+   desktop cursor-field transform instead of fighting it.
+   No emojis, no em-dashes.
+   ========================================================================== */
+
+.comparison-section .container,
+.features-section .container,
+.finance-section .container,
+.results-section .container,
+.features-grid,
+.stats-grid {
+  perspective: 1400px;
+}
+
+.motion-block {
+  transform-origin: 50% 50%;
+  transition:
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    translate 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  will-change: rotate, scale;
+  backface-visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-block {
+    transition: none;
+  }
+}
