@@ -3,12 +3,14 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#fcfcfc">
+  <meta name="color-scheme" content="light">
   <title>VentiSwipe - Твои шансы на грант за 30 секунд свайпов</title>
   <meta name="description"
     content="VentiSwipe рассчитывает вероятность поступления и экономию бюджета в реальном времени. Без таблиц, без длинных тестов.">
-  <script type="module" crossorigin src="./assets/index-CzeafJ7P.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-DyowO3Ha.css">
+  <script type="module" crossorigin src="./assets/index-yXDBEF6y.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-Co_DK2cH.css">
 </head>
 
 <body>
@@ -16,6 +18,14 @@
   <!-- Cursor aurora: giant blurred rainbow blob that lerp-follows the pointer -->
   <div class="cursor-aurora" id="cursor-aurora" aria-hidden="true">
     <div class="cursor-aurora-blob"></div>
+  </div>
+
+  <!-- Seamless geometric background: fixed layer flowing behind the whole page -->
+  <div class="geo-bg" id="geo-bg" aria-hidden="true">
+    <div class="geo-flow geo-flow--mesh" data-tile="780" data-factor="0.16" data-depth="0.5"></div>
+    <div class="geo-flow geo-flow--grid" data-tile="540" data-factor="0.28" data-depth="0.8"></div>
+    <div class="geo-flow geo-flow--accents" data-tile="1500" data-factor="0.09" data-depth="1"></div>
+    <div class="geo-scrim" aria-hidden="true"></div>
   </div>
 
   <!-- Site Header -->
@@ -41,6 +51,12 @@
 
       <div class="header-actions">
         <button id="btn-start-hero" class="btn btn-primary magnetic" data-magnetic="0.7">Начать выбор</button>
+        <button type="button" id="btn-mobile-menu" class="mobile-menu-btn" aria-label="Открыть меню навигации"
+          aria-expanded="false" aria-controls="mobile-drawer">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
       </div>
     </div>
   </header>
@@ -157,13 +173,25 @@
               <div class="inputs-grid" style="margin-top: 24px;">
                 <div class="field-control">
                   <label for="sat-input" class="form-label">SAT Score (400-1600)</label>
-                  <input type="number" id="sat-input" class="input-box" min="400" max="1600" step="10" value="1350"
-                    placeholder="1350">
+                  <div class="input-stepper">
+                    <button type="button" class="stepper-btn" data-step-target="sat-input" data-step-dir="-1"
+                      aria-label="Уменьшить SAT">-</button>
+                    <input type="number" id="sat-input" class="input-box" min="400" max="1600" step="10" value="1350"
+                      placeholder="1350" inputmode="numeric">
+                    <button type="button" class="stepper-btn" data-step-target="sat-input" data-step-dir="1"
+                      aria-label="Увеличить SAT">+</button>
+                  </div>
                 </div>
                 <div class="field-control">
                   <label for="ielts-input" class="form-label">IELTS Score (5.0-9.0)</label>
-                  <input type="number" id="ielts-input" class="input-box" min="5.0" max="9.0" step="0.5" value="7.0"
-                    placeholder="7.0">
+                  <div class="input-stepper">
+                    <button type="button" class="stepper-btn" data-step-target="ielts-input" data-step-dir="-1"
+                      aria-label="Уменьшить IELTS">-</button>
+                    <input type="number" id="ielts-input" class="input-box" min="5.0" max="9.0" step="0.5" value="7.0"
+                      placeholder="7.0" inputmode="decimal">
+                    <button type="button" class="stepper-btn" data-step-target="ielts-input" data-step-dir="1"
+                      aria-label="Увеличить IELTS">+</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -356,6 +384,11 @@
           <div class="card-stage-container">
             <div id="card-stack" class="card-stack">
               <!-- Dynamically populated cards with 100% opaque backgrounds -->
+            </div>
+            <div class="swiper-gesture-hint" id="swiper-gesture-hint" aria-hidden="true">
+              <span class="hint-side hint-left">&#8592;</span>
+              <span class="hint-text">Свайпай карточки</span>
+              <span class="hint-side hint-right">&#8594;</span>
             </div>
           </div>
 
@@ -583,6 +616,59 @@
       </div>
     </div>
   </footer>
+
+  <!-- Mobile navigation drawer -->
+  <div class="mobile-drawer-backdrop" id="mobile-drawer-backdrop" hidden></div>
+  <aside class="mobile-drawer" id="mobile-drawer" role="dialog" aria-modal="true" aria-label="Меню навигации" hidden>
+    <div class="mobile-drawer-head">
+      <span class="brand-logo">Venti<span class="brand-logo-accent">Swipe</span></span>
+      <button type="button" id="btn-mobile-menu-close" class="mobile-drawer-close" aria-label="Закрыть меню">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <nav class="mobile-drawer-nav">
+      <a href="#comparison" class="mobile-drawer-link">Преимущества</a>
+      <a href="#how-it-works" class="mobile-drawer-link">Как работает</a>
+      <a href="#finance-math" class="mobile-drawer-link">Экономика</a>
+      <a href="#results" class="mobile-drawer-link">Результаты</a>
+    </nav>
+    <button type="button" id="btn-start-hero-mobile" class="btn btn-primary btn-lg mobile-drawer-cta">Начать выбор</button>
+  </aside>
+
+  <!-- Thumb-zone action bar for the swiper (mobile) -->
+  <div class="swiper-mobile-bar" id="swiper-mobile-bar">
+    <button type="button" id="btn-mobile-skip" class="mobile-bar-btn mobile-bar-skip" aria-label="Пропустить карточку">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+      <span>Мимо</span>
+    </button>
+    <button type="button" id="btn-mobile-undo" class="mobile-bar-btn mobile-bar-undo" aria-label="Вернуть последнюю карточку"
+      disabled>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="9 14 4 9 9 4"></polyline>
+        <path d="M20 20v-7a4 4 0 0 0-4-4H4"></path>
+      </svg>
+      <span>Вернуть</span>
+    </button>
+    <button type="button" id="btn-mobile-like" class="mobile-bar-btn mobile-bar-like" aria-label="Добавить в список">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+      <span>Хочу</span>
+    </button>
+  </div>
+
+  <!-- Bottom CTA bar for the match screen (mobile) -->
+  <div class="match-mobile-bar" id="match-mobile-bar">
+    <a href="https://ventorme.ai/register?utm_source=hacknext&utm_campaign=team-159" target="_blank"
+      rel="noopener noreferrer" class="mobile-bar-cta">Забрать персональный план</a>
+    <button type="button" id="btn-mobile-restart" class="mobile-bar-restart">Заново</button>
+  </div>
 
   <!-- Global round Venti assistant bubble -->
   <div class="venti-bubble magnetic is-appearing" id="venti-bubble" title="ИИ-помощник Venti" data-magnetic="1.6" role="button" tabindex="0">

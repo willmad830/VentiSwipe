@@ -1,0 +1,793 @@
+/* ==========================================================================
+   VentiSwipe - Mobile-First Adaptation Layer
+   Loaded after style.css and motion.css. Additive only: it never rewrites
+   desktop rules, it only adapts and enhances small / touch screens.
+   No emojis, no em-dashes.
+   ========================================================================== */
+
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --touch-target: 44px;
+  --mobile-bar-h: 72px;
+  --ease-out-expo-m: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
+}
+
+/* Prevent iOS Safari auto-zoom on focus: every form control is >= 16px. */
+input,
+select,
+textarea,
+.input-box {
+  font-size: 16px;
+}
+
+/* Remove the grey tap flash on touch devices. */
+@media (hover: none) {
+  .btn,
+  .action-btn,
+  .quiz-tile,
+  .quiz-option-row,
+  .preset-btn,
+  .swiper-back-btn,
+  .nav-link,
+  a,
+  .restart-btn,
+  .mobile-menu-btn,
+  .mobile-drawer-link,
+  .mobile-bar-btn,
+  .mobile-bar-cta,
+  .mobile-bar-restart {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Comfortable touch targets. */
+.btn {
+  min-height: var(--touch-target);
+}
+
+.btn-lg {
+  min-height: 50px;
+}
+
+.preset-btn {
+  min-height: var(--touch-target);
+  min-width: var(--touch-target);
+  padding: 8px 14px;
+  font-size: 14px;
+}
+
+.range-input {
+  height: 10px;
+}
+
+.range-input::-webkit-slider-thumb {
+  width: 28px;
+  height: 28px;
+}
+
+.range-input::-moz-range-thumb {
+  width: 28px;
+  height: 28px;
+}
+
+/* Score inputs: hide native number spinners, add one-handed steppers. */
+.input-box[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.input-box::-webkit-outer-spin-button,
+.input-box::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-stepper {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.input-stepper .input-box {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+}
+
+.stepper-btn {
+  flex: 0 0 var(--touch-target);
+  min-height: var(--touch-target);
+  border: 1px solid var(--gray-7);
+  border-radius: var(--radius-md);
+  background-color: var(--gray-3);
+  color: var(--gray-12);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.stepper-btn:active {
+  background-color: var(--gray-4);
+}
+
+/* ==========================================================================
+   Header + hamburger + drawer
+   ========================================================================== */
+
+.site-header {
+  padding-top: var(--safe-top);
+}
+
+.mobile-menu-btn {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  padding: 0;
+  border: 1px solid var(--gray-7);
+  border-radius: var(--radius-md);
+  background-color: var(--gray-1);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.mobile-menu-btn span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  border-radius: 2px;
+  background-color: var(--gray-12);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.mobile-menu-btn:active {
+  background-color: var(--gray-3);
+}
+
+.mobile-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  background: rgba(16, 20, 30, 0.42);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.mobile-drawer-backdrop.is-open {
+  opacity: 1;
+}
+
+.mobile-drawer-backdrop[hidden] {
+  display: none;
+}
+
+.mobile-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1300;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: min(86vw, 340px);
+  height: 100vh;
+  height: 100dvh;
+  padding: calc(18px + var(--safe-top)) 20px calc(20px + var(--safe-bottom));
+  background-color: var(--gray-1);
+  border-left: 1px solid var(--gray-6);
+  box-shadow: -18px 0 48px rgba(0, 0, 0, 0.14);
+  overflow-y: auto;
+  transform: translateX(102%);
+  transition: transform 0.28s var(--ease-out-expo-m);
+  will-change: transform;
+}
+
+.mobile-drawer.is-open {
+  transform: translateX(0);
+}
+
+.mobile-drawer[hidden] {
+  display: none;
+}
+
+.mobile-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mobile-drawer-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  border: 1px solid var(--gray-7);
+  border-radius: var(--radius-md);
+  background-color: var(--gray-1);
+  color: var(--gray-12);
+  cursor: pointer;
+}
+
+.mobile-drawer-nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-drawer-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 52px;
+  padding: 12px 4px;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--gray-12);
+  border-bottom: 1px solid var(--gray-5);
+}
+
+.mobile-drawer-link::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid var(--gray-9);
+  border-bottom: 2px solid var(--gray-9);
+  transform: rotate(-45deg);
+}
+
+.mobile-drawer-link:last-child {
+  border-bottom: none;
+}
+
+.mobile-drawer-cta {
+  width: 100%;
+  margin-top: auto;
+}
+
+body.drawer-open {
+  overflow: hidden;
+}
+
+/* Anchor targets clear the sticky header. */
+#hero-block,
+#comparison,
+#how-it-works,
+#finance-math,
+#results {
+  scroll-margin-top: calc(72px + var(--safe-top));
+}
+
+/* ==========================================================================
+   Mobile action bars (swiper + match CTA), thumb-zone
+   ========================================================================== */
+
+.swiper-mobile-bar,
+.match-mobile-bar {
+  display: none;
+}
+
+.mobile-bar-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 52px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.12s ease, background-color 0.15s ease;
+}
+
+.mobile-bar-btn:active {
+  transform: scale(0.96);
+}
+
+.mobile-bar-skip {
+  background-color: var(--gray-3);
+  color: var(--gray-12);
+  border-color: var(--gray-7);
+}
+
+.mobile-bar-like {
+  background-color: var(--blue-9);
+  color: #ffffff;
+  box-shadow: 0 4px 14px var(--blue-a4);
+}
+
+.mobile-bar-undo {
+  flex: 0 0 64px;
+  background-color: var(--gray-2);
+  color: var(--gray-12);
+  border-color: var(--gray-7);
+}
+
+.mobile-bar-undo:disabled {
+  opacity: 0.42;
+  pointer-events: none;
+}
+
+.mobile-bar-cta {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 16px;
+  border-radius: var(--radius-md);
+  background-color: var(--blue-9);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 4px 14px var(--blue-a4);
+}
+
+.mobile-bar-restart {
+  flex: 0 0 92px;
+  min-height: 52px;
+  border: 1px solid var(--gray-7);
+  border-radius: var(--radius-md);
+  background-color: var(--gray-2);
+  color: var(--gray-12);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .swiper-mobile-bar.is-active,
+  .match-mobile-bar.is-active {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 900;
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+    padding: 10px 14px calc(10px + var(--safe-bottom));
+    background: var(--gray-surface);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border-top: 1px solid var(--gray-6);
+  }
+
+  /* Keep in-flow content clear of the fixed bars. */
+  body.swiper-active .swiper-view,
+  body.match-active .match-screen {
+    padding-bottom: calc(var(--mobile-bar-h) + var(--safe-bottom) + 16px);
+  }
+
+  /* The in-panel register CTA is replaced by the fixed match bar. */
+  body.match-active .cta-box {
+    display: none;
+  }
+
+  /* Move Venti out of the thumb zone while the swiper bar is visible. */
+  body.swiper-active .venti-bubble {
+    top: calc(72px + var(--safe-top));
+    right: 14px;
+    bottom: auto;
+    animation: none;
+  }
+
+  /* Venti sits at the top now, so its tooltip opens downward. */
+  body.swiper-active .venti-bubble-tooltip {
+    top: calc(100% + 14px);
+    bottom: auto;
+  }
+
+  body.swiper-active .venti-bubble-tooltip::after {
+    top: -7px;
+    bottom: auto;
+  }
+}
+
+/* ==========================================================================
+   Swiper gesture hint overlay
+   ========================================================================== */
+
+.swiper-gesture-hint {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 10px 18px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.swiper-gesture-hint.is-visible {
+  opacity: 1;
+}
+
+.swiper-gesture-hint .hint-side {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--blue-9);
+  animation: hintNudge 1.4s ease-in-out infinite;
+}
+
+.swiper-gesture-hint .hint-left {
+  animation-delay: 0.7s;
+}
+
+.swiper-gesture-hint .hint-text {
+  align-self: flex-end;
+  margin-bottom: 4px;
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
+  background: rgba(21, 46, 99, 0.9);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+@keyframes hintNudge {
+  0%, 100% { transform: translateX(0); opacity: 0.65; }
+  50% { transform: translateX(6px); opacity: 1; }
+}
+
+.swiper-gesture-hint .hint-left {
+  animation-name: hintNudgeLeft;
+}
+
+@keyframes hintNudgeLeft {
+  0%, 100% { transform: translateX(0); opacity: 0.65; }
+  50% { transform: translateX(-6px); opacity: 1; }
+}
+
+/* ==========================================================================
+   Responsive: tablet portrait
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .mobile-menu-btn {
+    display: inline-flex;
+  }
+
+  .header-nav {
+    display: none;
+  }
+
+  .header-inner {
+    height: 64px;
+  }
+
+  .site-header {
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+
+  .brand-badge {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   Responsive: phone
+   ========================================================================== */
+
+@media (max-width: 640px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  .hero-section {
+    padding: 36px 0 48px;
+  }
+
+  .hero-title {
+    font-size: clamp(24px, 7vw, 30px);
+  }
+
+  .hero-subtitle {
+    font-size: 15px;
+  }
+
+  .interactive-panel {
+    padding: 18px 16px;
+    border-radius: var(--radius-lg);
+  }
+
+  .quiz-question-title {
+    font-size: 21px;
+  }
+
+  .quiz-screen-footer {
+    gap: 10px;
+  }
+
+  .quiz-screen-footer .btn {
+    flex: 1;
+  }
+
+  .quiz-screen-footer.between .btn-outline {
+    flex: 0 0 auto;
+  }
+
+  .quiz-tiles-grid {
+    gap: 12px;
+  }
+
+  .quiz-tile {
+    padding: 18px 16px;
+  }
+
+  .score-number-big {
+    font-size: 40px;
+  }
+
+  .section-title {
+    font-size: 26px;
+  }
+
+  .comparison-section,
+  .features-section,
+  .finance-section,
+  .results-section {
+    padding: 52px 0;
+  }
+
+  .section-head {
+    margin-bottom: 32px;
+  }
+
+  .feature-card {
+    padding: 24px 20px;
+  }
+
+  .finance-card-wrapper {
+    padding: 26px 20px;
+  }
+
+  .partner-box {
+    padding: 26px 20px;
+  }
+
+  .match-title {
+    font-size: 26px;
+  }
+
+  .shock-insight-card {
+    padding: 18px 18px;
+  }
+
+  .btn-cta-main {
+    font-size: 15px;
+    padding: 15px 20px;
+  }
+
+  /* Swiper stage fits the viewport instead of a hard 520px. */
+  .card-stage-container {
+    height: min(72dvh, 520px);
+    min-height: 420px;
+    margin: 6px auto 20px;
+  }
+
+  .swipe-card {
+    padding: 18px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .swipe-card::-webkit-scrollbar {
+    display: none;
+  }
+
+  .card-title {
+    font-size: 19px;
+  }
+
+  .chance-percent {
+    font-size: 22px;
+  }
+
+  .card-metrics-grid {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .metric-val {
+    font-size: 14px;
+  }
+
+  /* Desktop controls are replaced by the fixed thumb-zone bar. */
+  .swiper-controls {
+    display: none;
+  }
+
+  .swiper-guide-note {
+    display: none;
+  }
+
+  /* Match list: no nested scroll traps on phones. */
+  .matches-grid {
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+  }
+
+  .match-item-card {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .match-item-meta {
+    white-space: normal;
+  }
+
+  .match-summary-stats {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .stat-pill {
+    flex: 1 1 140px;
+    min-width: 0;
+  }
+}
+
+@supports not (height: 100dvh) {
+  @media (max-width: 640px) {
+    .card-stage-container {
+      height: 520px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 14px;
+  }
+
+  .interactive-panel {
+    padding: 16px 13px;
+  }
+
+  .quiz-tile {
+    padding: 16px 14px;
+  }
+
+  .quiz-option-row {
+    padding: 14px 16px;
+  }
+
+  .stat-pill {
+    padding: 14px 16px;
+  }
+
+  .hero-title {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 400px) {
+  .match-item-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .match-item-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 420px) {
+  .header-actions .btn-primary {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 360px) {
+  .interactive-panel {
+    padding: 14px 11px;
+  }
+
+  .hero-title {
+    font-size: 23px;
+  }
+
+  .preset-btn {
+    padding: 8px 10px;
+  }
+
+  .mobile-bar-btn {
+    font-size: 14px;
+  }
+
+  .brand-logo {
+    font-size: 18px;
+  }
+}
+
+/* ==========================================================================
+   Snap carousels: features / stats become swipeable rails on small screens
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  .features-grid,
+  .stats-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 14px;
+    padding: 0 0 6px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 0;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .features-grid::-webkit-scrollbar,
+  .stats-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .features-grid > * {
+    flex: 0 0 84%;
+    scroll-snap-align: start;
+  }
+
+  .stats-grid > * {
+    flex: 0 0 62%;
+    scroll-snap-align: start;
+  }
+}
+
+/* ==========================================================================
+   Performance + motion safety on touch / small screens
+   ========================================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .cursor-aurora {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .venti-bubble,
+  .venti-bubble-pulse,
+  .cursor-aurora-blob,
+  .cursor-aurora-blob::before,
+  .cursor-aurora-blob::after,
+  .status-indicator,
+  .swipe-card.is-entering,
+  .swiper-gesture-hint .hint-side {
+    animation: none !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}

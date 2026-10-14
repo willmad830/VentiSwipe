@@ -1,0 +1,102 @@
+/* ==========================================================================
+   VentiSwipe - Seamless Geometric Background
+   A single fixed layer that flows behind the ENTIRE page. Pattern tiles are
+   repeated vertically and translated with scroll, so the geometry never ends
+   or restarts. Content sections are transparent and float above it.
+   No emojis, no em-dashes.
+   ========================================================================== */
+
+.geo-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+
+.geo-bg.is-ready {
+  opacity: 1;
+}
+
+/* Each flow layer is a repeating pattern. JS writes the tile image, the tile
+   height (--tile) and the per-frame transform (scroll parallax + pointer). */
+.geo-flow {
+  position: absolute;
+  top: calc(-1 * var(--tile, 700px));
+  left: -6%;
+  right: -6%;
+  height: calc(100% + 2 * var(--tile, 700px));
+  background-repeat: repeat-y;
+  background-position: center top;
+  transform: translate3d(0, 0, 0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+/* Abstract mesh and grid stretch to the viewport width (no seams). */
+.geo-flow--mesh,
+.geo-flow--grid {
+  background-size: 100% var(--tile, 700px);
+}
+
+/* Wireframe accents keep their aspect ratio and stay centered. */
+.geo-flow--accents {
+  background-size: auto var(--tile, 1500px);
+}
+
+/* Soft veil: keeps headings readable while lines stay visible at the edges. */
+.geo-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(64% 54% at 50% 42%, rgba(252, 252, 252, 0.42), rgba(252, 252, 252, 0) 80%),
+    linear-gradient(180deg, rgba(37, 99, 235, 0.06), rgba(252, 252, 252, 0) 26%);
+}
+
+/* ==========================================================================
+   Content floats above the background; section bands become transparent so
+   the geometry reads as one continuous thread from top to bottom.
+   ========================================================================== */
+
+.site-header,
+.site-footer,
+.hero-section,
+.comparison-section,
+.features-section,
+.finance-section,
+.results-section {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-section,
+.comparison-section,
+.features-section,
+.finance-section,
+.results-section,
+.site-footer {
+  background: transparent;
+}
+
+/* ==========================================================================
+   Phone tuning: same behaviour, calmer density.
+   ========================================================================== */
+
+@media (max-width: 640px) {
+  .geo-bg.is-ready {
+    opacity: 0.94;
+  }
+
+  .geo-flow {
+    left: -10%;
+    right: -10%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .geo-bg {
+    transition: none;
+  }
+}

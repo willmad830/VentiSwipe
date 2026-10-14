@@ -4,6 +4,9 @@
  * Strictly NO emojis and NO em-dashes.
  */
 
+import { initMobile, haptic } from './mobile.js';
+import { initGeoBackground } from './geo.js';
+
 // University database directly integrated from univer.txt
 const UNIVERSITY_DATABASE = {
   "kz": [
@@ -1009,7 +1012,8 @@ const appState = {
   currentDeck: [],
   currentIndex: 0,
   likedUniversities: [],
-  totalInitialDeckSize: 0
+  totalInitialDeckSize: 0,
+  swipeHistory: []
 };
 
 // Calculation Formulas
@@ -1090,6 +1094,7 @@ function updateQuizUI() {
   }
 
   if (window.refreshCursorField) window.refreshCursorField();
+  document.dispatchEvent(new CustomEvent('venti:step', { detail: { step: step } }));
 }
 
 // Prepare Deck & Deduplicate
@@ -1156,6 +1161,8 @@ function prepareDeck() {
   appState.currentIndex = 0;
   appState.likedUniversities = [];
   appState.totalInitialDeckSize = appState.currentDeck.length;
+  appState.swipeHistory = [];
+  updateMobileUndoState();
 }
 
 // Venti AI Assistant Replica Library
@@ -1719,6 +1726,7 @@ function attachDragHandlers(cardEl) {
   let currentY = 0;
   let isDragging = false;
   let activePointerId = null;
+  let axisLock = null;
 
   const stampLike = cardEl.querySelector('.stamp-like');
   const stampSkip = cardEl.querySelector('.stamp-skip');
@@ -1742,6 +1750,7 @@ function attachDragHandlers(cardEl) {
     if (isDragging) return;
     isDragging = true;
     activePointerId = e.pointerId;
+    axisLock = null;
     cardEl.classList.add('is-dragging');
     startX = e.clientX;
     startY = e.clientY;
@@ -1762,6 +1771,14 @@ function attachDragHandlers(cardEl) {
     currentX = e.clientX - startX;
     currentY = e.clientY - startY;
 
+    // Lock to the dominant axis so a vertical touch scrolls the page
+    // instead of dragging the card.
+    if (!axisLock) {
+      if (Math.abs(currentX) < 8 && Math.abs(currentY) < 8) return;
+      axisLock = Math.abs(currentX) > Math.abs(currentY) ? 'x' : 'y';
+    }
+    if (axisLock === 'y') return;
+
     const rotateDeg = currentX * 0.065;
     cardEl.style.transform =
       'translate3d(' + currentX + 'px, ' + currentY + 'px, 0) rotate(' + rotateDeg + 'deg)';
@@ -1781,9 +1798,11 @@ function attachDragHandlers(cardEl) {
     activePointerId = null;
 
     const threshold = 104;
-    if (currentX > threshold) {
+    const horizontal = axisLock === 'x';
+    axisLock = null;
+    if (horizontal && currentX > threshold) {
       triggerCardAction('like', cardEl);
-    } else if (currentX < -threshold) {
+    } else if (horizontal && currentX < -threshold) {
       triggerCardAction('skip', cardEl);
     } else {
       // Soft spring snap back to center
@@ -1814,6 +1833,12 @@ function triggerCardAction(action, targetCard) {
       appState.likedUniversities.push(currentItem);
     }
   }
+
+  if (currentItem) {
+    appState.swipeHistory.push({ action: action, item: currentItem });
+  }
+  haptic(action);
+  updateMobileUndoState();
   
   const flyOutX = action === 'like' ? 920 : -920;
   const flyOutRotate = action === 'like' ? 22 : -22;
@@ -1834,6 +1859,39 @@ function triggerCardAction(action, targetCard) {
   }, 380);
 }
 
+// Enable or disable the mobile undo button based on swipe history.
+function updateMobileUndoState() {
+  const btn = document.getElementById('btn-mobile-undo');
+  if (btn) btn.disabled = appState.swipeHistory.length === 0;
+}
+
+// Restore the previously swiped card (mobile one-handed correction).
+function undoLastSwipe() {
+  if (!appState.swipeHistory.length) return;
+  const last = appState.swipeHistory.pop();
+  if (last.action === 'like' && last.item) {
+    const idx = appState.likedUniversities.findIndex((u) => u.id === last.item.id);
+    if (idx >= 0) appState.likedUniversities.splice(idx, 1);
+  }
+  appState.currentIndex = Math.max(0, appState.currentIndex - 1);
+  haptic('undo');
+  updateMobileUndoState();
+  renderDeckDOM();
+}
+
+// Toggle the fixed mobile bars that mirror the current step.
+function setSwiperActive(active) {
+  document.body.classList.toggle('swiper-active', active);
+  const bar = document.getElementById('swiper-mobile-bar');
+  if (bar) bar.classList.toggle('is-active', active);
+}
+
+function setMatchActive(active) {
+  document.body.classList.toggle('match-active', active);
+  const bar = document.getElementById('match-mobile-bar');
+  if (bar) bar.classList.toggle('is-active', active);
+}
+
 // Show Final Match Screen with Strictly Deduplicated University List
 function showFinalMatchScreen() {
   const step1Form = document.getElementById('step-1-form');
@@ -1843,6 +1901,9 @@ function showFinalMatchScreen() {
   if (step1Form) step1Form.classList.add('hidden');
   if (step2Swiper) step2Swiper.classList.add('hidden');
   if (matchScreen) matchScreen.classList.remove('hidden');
+
+  setSwiperActive(false);
+  setMatchActive(true);
   
   // Deduplicate liked list by university name
   const seenNames = new Set();
@@ -1913,6 +1974,74 @@ function showFinalMatchScreen() {
   }
 
   if (window.refreshCursorField) window.refreshCursorField();
+  document.dispatchEvent(new CustomEvent('venti:phase', { detail: { phase: 'match' } }));
+}
+
+// Named navigation helpers shared by buttons and mobile gestures.
+function goToQuizStep(step) {
+  appState.currentQuizStep = Math.min(4, Math.max(1, step));
+  updateQuizUI();
+}
+
+function quizNext() {
+  if (appState.currentQuizStep < 4) {
+    goToQuizStep(appState.currentQuizStep + 1);
+  } else {
+    launchSwiper();
+  }
+}
+
+function quizPrev() {
+  if (appState.currentQuizStep > 1) {
+    goToQuizStep(appState.currentQuizStep - 1);
+  }
+}
+
+function scrollToHero() {
+  const heroBlock = document.getElementById('hero-block');
+  if (heroBlock) heroBlock.scrollIntoView({ behavior: 'smooth' });
+}
+
+function launchSwiper() {
+  prepareDeck();
+  const step1Form = document.getElementById('step-1-form');
+  const step2Swiper = document.getElementById('step-2-swiper');
+  const matchScreen = document.getElementById('match-screen');
+
+  if (step1Form) step1Form.classList.add('hidden');
+  if (matchScreen) matchScreen.classList.add('hidden');
+  if (step2Swiper) step2Swiper.classList.remove('hidden');
+
+  setMatchActive(false);
+  setSwiperActive(true);
+
+  showVentiBubble('Свайпай вправо, чтобы добавить вуз в список. Свайпай влево, чтобы пропустить.', 'info');
+
+  renderDeckDOM();
+  if (window.refreshCursorField) window.refreshCursorField();
+  if (step2Swiper) {
+    step2Swiper.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  document.dispatchEvent(new CustomEvent('venti:phase', { detail: { phase: 'swiper' } }));
+}
+
+function restartApp() {
+  const step1Form = document.getElementById('step-1-form');
+  const step2Swiper = document.getElementById('step-2-swiper');
+  const matchScreen = document.getElementById('match-screen');
+
+  if (matchScreen) matchScreen.classList.add('hidden');
+  if (step2Swiper) step2Swiper.classList.add('hidden');
+  if (step1Form) step1Form.classList.remove('hidden');
+
+  setSwiperActive(false);
+  setMatchActive(false);
+
+  appState.currentQuizStep = 1;
+  updateQuizUI();
+
+  scrollToHero();
+  document.dispatchEvent(new CustomEvent('venti:phase', { detail: { phase: 'quiz' } }));
 }
 
 // Initialize Event Listeners
@@ -1920,12 +2049,7 @@ function initEventListeners() {
   // Header button smooth scroll
   const btnStartHero = document.getElementById('btn-start-hero');
   if (btnStartHero) {
-    btnStartHero.addEventListener('click', () => {
-      const heroBlock = document.getElementById('hero-block');
-      if (heroBlock) {
-        heroBlock.scrollIntoView({ behavior: 'smooth' });
-      }
-    });
+    btnStartHero.addEventListener('click', scrollToHero);
   }
 
   // Question 1: Track Tiles
@@ -1957,43 +2081,13 @@ function initEventListeners() {
   const btnPrev3 = document.getElementById('btn-quiz-prev-3');
   const btnPrev4 = document.getElementById('btn-quiz-prev-4');
 
-  if (btnNext1) {
-    btnNext1.addEventListener('click', () => {
-      appState.currentQuizStep = 2;
-      updateQuizUI();
-    });
-  }
-  if (btnNext2) {
-    btnNext2.addEventListener('click', () => {
-      appState.currentQuizStep = 3;
-      updateQuizUI();
-    });
-  }
-  if (btnNext3) {
-    btnNext3.addEventListener('click', () => {
-      appState.currentQuizStep = 4;
-      updateQuizUI();
-    });
-  }
+  if (btnNext1) btnNext1.addEventListener('click', quizNext);
+  if (btnNext2) btnNext2.addEventListener('click', quizNext);
+  if (btnNext3) btnNext3.addEventListener('click', quizNext);
 
-  if (btnPrev2) {
-    btnPrev2.addEventListener('click', () => {
-      appState.currentQuizStep = 1;
-      updateQuizUI();
-    });
-  }
-  if (btnPrev3) {
-    btnPrev3.addEventListener('click', () => {
-      appState.currentQuizStep = 2;
-      updateQuizUI();
-    });
-  }
-  if (btnPrev4) {
-    btnPrev4.addEventListener('click', () => {
-      appState.currentQuizStep = 3;
-      updateQuizUI();
-    });
-  }
+  if (btnPrev2) btnPrev2.addEventListener('click', quizPrev);
+  if (btnPrev3) btnPrev3.addEventListener('click', quizPrev);
+  if (btnPrev4) btnPrev4.addEventListener('click', quizPrev);
 
   // Step 2: Slider & Presets
   const entSlider = document.getElementById('ent-slider');
@@ -2042,6 +2136,26 @@ function initEventListeners() {
     });
   }
 
+  // One-handed steppers for the score inputs
+  document.querySelectorAll('.stepper-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const target = document.getElementById(btn.dataset.stepTarget);
+      if (!target) return;
+      const dir = parseFloat(btn.dataset.stepDir);
+      const step = parseFloat(target.step) || 1;
+      const min = parseFloat(target.min);
+      const max = parseFloat(target.max);
+      let val = parseFloat(target.value);
+      if (isNaN(val)) val = min || 0;
+      val += dir * step;
+      val = Math.max(min, Math.min(max, val));
+      if (step < 1) val = Math.round(val * 2) / 2;
+      target.value = step < 1 ? val.toFixed(1) : String(val);
+      target.dispatchEvent(new Event('input', { bubbles: true }));
+      haptic('step');
+    });
+  });
+
   // Step 3: Subjects & Abroad Regions
   const subjectRows = document.querySelectorAll('#quiz-screen-3-kz .quiz-option-row');
   subjectRows.forEach(row => {
@@ -2074,24 +2188,7 @@ function initEventListeners() {
   // Launch Swiper Button
   const btnLaunchSwiper = document.getElementById('btn-launch-swiper');
   if (btnLaunchSwiper) {
-    btnLaunchSwiper.addEventListener('click', () => {
-      prepareDeck();
-      const step1Form = document.getElementById('step-1-form');
-      const step2Swiper = document.getElementById('step-2-swiper');
-      const matchScreen = document.getElementById('match-screen');
-      
-      if (step1Form) step1Form.classList.add('hidden');
-      if (matchScreen) matchScreen.classList.add('hidden');
-      if (step2Swiper) step2Swiper.classList.remove('hidden');
-
-      showVentiBubble('Свайпай вправо, чтобы добавить вуз в список. Свайпай влево, чтобы пропустить.', 'info');
-      
-      renderDeckDOM();
-      if (window.refreshCursorField) window.refreshCursorField();
-      if (step2Swiper) {
-        step2Swiper.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }
-    });
+    btnLaunchSwiper.addEventListener('click', launchSwiper);
   }
 
   // Back to Step 1 Form
@@ -2101,11 +2198,14 @@ function initEventListeners() {
       const step1Form = document.getElementById('step-1-form');
       const step2Swiper = document.getElementById('step-2-swiper');
       const matchScreen = document.getElementById('match-screen');
-      
+
       if (step2Swiper) step2Swiper.classList.add('hidden');
       if (matchScreen) matchScreen.classList.add('hidden');
       if (step1Form) step1Form.classList.remove('hidden');
-      
+
+      setSwiperActive(false);
+      setMatchActive(false);
+
       appState.currentQuizStep = 1;
       updateQuizUI();
     });
@@ -2137,23 +2237,7 @@ function initEventListeners() {
   // Restart Button
   const btnRestartSwiper = document.getElementById('btn-restart-swiper');
   if (btnRestartSwiper) {
-    btnRestartSwiper.addEventListener('click', () => {
-      const step1Form = document.getElementById('step-1-form');
-      const step2Swiper = document.getElementById('step-2-swiper');
-      const matchScreen = document.getElementById('match-screen');
-      
-      if (matchScreen) matchScreen.classList.add('hidden');
-      if (step2Swiper) step2Swiper.classList.add('hidden');
-      if (step1Form) step1Form.classList.remove('hidden');
-      
-      appState.currentQuizStep = 1;
-      updateQuizUI();
-      
-      const heroBlock = document.getElementById('hero-block');
-      if (heroBlock) {
-        heroBlock.scrollIntoView({ behavior: 'smooth' });
-      }
-    });
+    btnRestartSwiper.addEventListener('click', restartApp);
   }
 }
 
@@ -2169,4 +2253,15 @@ document.addEventListener('DOMContentLoaded', () => {
   initMagneticElements();
   initCursorField();
   initCursorAurora();
+  initGeoBackground();
+  initMobile({
+    appState: appState,
+    quizNext: quizNext,
+    quizPrev: quizPrev,
+    launchSwiper: launchSwiper,
+    restart: restartApp,
+    triggerCardAction: triggerCardAction,
+    undoLastSwipe: undoLastSwipe
+  });
+  updateMobileUndoState();
 });
